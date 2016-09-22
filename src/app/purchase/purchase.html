@@ -1,0 +1,121 @@
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--4-col">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-focused">
+      <select ng-init="vm.loadSupplier()" id="supplier" class="mdl-textfield__input" ng-model="vm.supplierId" ng-options="supplier.id as supplier.supplierName for supplier in vm.suppliers">
+            </select>
+      <label class="mdl-textfield__label" for="supplier">Supplier</label>
+    </div>
+  </div>
+
+  <div class="mdl-cell mdl-cell--4-col">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <input class="mdl-textfield__input" ng-model="vm.POnumber" type="text" id="productCode">
+      <label class="mdl-textfield__label" for="productCode">PO Number</label>
+    </div>
+  </div>
+
+  <div class="mdl-cell mdl-cell--4-col">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <select ng-model="vm.status" id="supplier" class="mdl-textfield__input" >
+        <option value="lunas">Lunas</option>
+        <option value="hutang">Hutang</option>
+      </select>
+      <label class="mdl-textfield__label" for="supplier">Status</label>
+    </div>
+  </div>
+
+  <div class="mdl-cell mdl-cell--4-col">
+    <datepicker style="width:auto" date-format="dd/MM/yyyy" selector="mdl-textfield__input">
+      <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" type="text" ng-model="vm.dueDate" placeholder="Due Date" id="periodStart">
+      </div>
+    </datepicker>
+  </div>
+
+</div>
+
+
+<h5>Purchase Detail Product</h5>
+<hr style="border-style:dashed"/>
+
+<form ng-submit="vm.addToCart()">
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <!-- <input class="mdl-textfield__input" ng-model="vm.productCode" type="text" id="productCode">
+        <label class="mdl-textfield__label" for="productCode">Scan or Input Product Code</label> -->
+        <autocomplete attr-placeholder="input or scan barcode" attr-class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" attr-input-id="valueCode" attr-input-class="mdl-textfield__input" ng-model="vm.product" data="vm.products" on-type="vm.updateProduct"></autocomplete>
+      </div>
+    </div>
+
+<!--     <div class="mdl-cell mdl-cell--4-col">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" ng-model="vm.price" type="text" id="price">
+        <label class="mdl-textfield__label" for="price">Price</label>
+      </div>
+    </div>
+
+    <div class="mdl-cell mdl-cell--4-col">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" ng-model="vm.qty" type="text" id="qty">
+        <label class="mdl-textfield__label" for="qty">Qty</label>
+      </div>
+    </div> -->
+
+  </div>
+  <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="addBtn">Add</button>&nbsp;&nbsp;
+  <a ui-sref="main.product" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="addBtn">New Product</a>
+</form>
+<br/>
+<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width:100%">
+  <thead>
+    <tr>
+      <th>Product Code</th>
+      <th>Product Name</th>
+      <th>Brand</th>
+      <th>Price</th>
+      <th>Qty</th>
+      <th>Subtotal</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="cartItem in vm.cart">
+      <td>{{cartItem.product.productCode}}</td>
+      <td>{{cartItem.product.productName}}</td>
+      <td>{{cartItem.product.brand.brandName}}</td>
+      <!-- <td>{{cartItem.price | currency: ""}}</td> -->
+      <td><div class="mdl-textfield mdl-js-textfield" style="padding-top:0px;width:130px">
+        <input class="mdl-textfield__input" style="text-align:right" type="text" ng-model="cartItem.price" id="cartPrice">
+        <label class="mdl-textfield__label" for="cartPrice">Price</label>
+      </div></td>
+      <!-- <td>{{cartItem.qty}}</td> -->
+      <td><input type="number" style="text-align:right" class="mdl-textfield__input" ng-model="cartItem.qty"></td>
+      <td ng-bind="cartItem.subtotal = cartItem.price * cartItem.qty;cartItem.subtotal | currency:''"></td>
+      <td style="padding-top:8px"><button id="deleteBtn" ng-click="vm.remove($index)" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px">clear</i></button></td>
+    </tr>
+    <tr>
+      <td><h5>Total</h5></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><h5>{{vm.getTotal() | currency:""}}</h5></td>
+    </tr>
+  </tbody>
+</table>
+<div class="mdl-grid" style="padding:0px">
+  <div class="mdl-cell mdl-cell--6-col">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-focused">
+      <input class="mdl-textfield__input" ng-model="vm.discount" type="text" id="discount" >
+      <label class="mdl-textfield__label" for="discount">Discount</label>
+    </div>
+  </div>
+
+   <div class="mdl-cell mdl-cell--6-col">
+    <h5 style="float:right">Grand Total: <span ng-model="vm.grandTotal" ng-bind="vm.grandTotal = vm.total - vm.discount | currency: ''"></span></h5>
+  </div>
+</div>
+
+<button ng-click="vm.save()" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="saveBtn">Save</button>

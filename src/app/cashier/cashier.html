@@ -1,0 +1,101 @@
+<div class="mdl-grid" style="padding:0px">
+ <div class="mdl-cell mdl-cell--6-col">
+  <form ng-submit="vm.addToCart()" autocomplete="off">
+    <autocomplete attr-placeholder="input or scan barcode" attr-class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" attr-input-id="valueCode" attr-input-class="mdl-textfield__input" ng-model="vm.productName" data="vm.products" on-type="vm.updateProduct" ></autocomplete>
+    <!-- <label class="mdl-textfield__label" for="valueCode">Scan or Input Product Code</label> -->
+    <br/>
+    <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="addBtn">Add</button>
+  </form>
+</div>
+</div>
+
+<br/>
+<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width:100%">
+  <thead>
+    <tr>
+      <th>Product Code</th>
+      <th>Product Name</th>
+      <th>Brand</th>
+      <th>Price</th>
+     <!--  <th>Lot Price</th> -->
+      <th>Qty</th>
+      <th>Subtotal</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="cartItem in vm.cart track by $index">
+      <td>{{cartItem.product.productCode}}</td>
+      <td>{{cartItem.product.productName}}</td>
+      <td>{{cartItem.product.brand.brandName}}</td>
+      <td>{{cartItem.sellPrice | currency: ""}}</td>
+      <!-- <td>{{cartItem.product.lotPrice | currency: ""}}</td> -->
+      <td><input onkeypress="onKeyPress(event);" min="0" type="number" ng-model="cartItem.qty" ng-change="vm.changeQty(cartItem,$index)" class="mdl-textfield__input"></td>
+      <td><span ng-bind="cartItem.subtotal = cartItem.sellPrice * cartItem.qty;cartItem.subtotal | currency:''"></span></td>
+      <td style="padding-top:8px"><button id="deleteBtn" ng-click="vm.remove($index)" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px">clear</i></button></td>
+    </tr>
+    <tr>
+      <td><h5>Total</h5></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><h5 ng-model="vm.total">{{vm.getTotal() | currency:""}}</h5></td>
+    </tr>
+  </tbody>
+</table>
+<br/>
+<div class="mdl-grid" style="padding:0px">
+  <div class="mdl-cell mdl-cell--4-col">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-focused">
+      <input class="mdl-textfield__input" ng-model="vm.discount" type="text" id="discount" >
+      <label class="mdl-textfield__label" for="discount">Discount</label>
+    </div>
+  </div>
+  <div class="mdl-cell mdl-cell--4-col">
+    <div ng-class="vm.isFocused">
+      <input class="mdl-textfield__input" ng-model="vm.payment" type="text" id="payment" >
+      <label class="mdl-textfield__label" for="payment">Payment</label>
+    </div>
+  </div>
+   <div class="mdl-cell mdl-cell--4-col">
+    <h5 style="float:right">Grand Total: <span ng-model="vm.grandTotal" ng-bind="vm.grandTotal = vm.total - vm.discount | currency: ''"></span></h5>
+  </div>
+</div>
+<div class="mdl-grid" style="padding:0px">
+   <div class="mdl-cell mdl-cell--4-col">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-focused">
+      <select ng-init="vm.loadTransactionMethod()" id="transactionMethod" class="mdl-textfield__input" ng-model="vm.transactionMethod" ng-options="transactionMethod as transactionMethod.methodName for transactionMethod in vm.transactionMethods" ng-change="vm.changeMethod(vm.transactionMethod)"></select>
+      <label class="mdl-textfield__label" for="transactionMethod">Transaction Method</label>
+    </div>
+   </div>
+
+   <div class="mdl-cell mdl-cell--4-col">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <!-- <select ng-init="vm.loadCustomer()" id="customer" class="mdl-textfield__input" ng-model="vm.customer" ng-options="customer as customer.customerName for customer in vm.customers"></select> -->
+      <select ng-init="vm.loadCustomer()" ng-model = "vm.customerId" class="mdl-textfield__input">
+        <option value="0" selected>none</option>
+        <option ng-repeat="customer in vm.customers" ng-value="customer.id">{{customer.customerName}}</option>
+      </select>
+      <label class="mdl-textfield__label" for="customer">Customer(optional)</label>
+    </div>
+   </div>
+
+   <div class="mdl-cell mdl-cell--4-col">
+     <h5 style="float:right" >Change: {{vm.change | currency: " "}}</h5>
+   </div>
+</div>
+
+
+<button ng-click="vm.save()" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="doneBtn">Done</button>&nbsp;<button ng-click="vm.change = 0" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Refresh</button>
+
+<script type="text/javascript">
+function onKeyPress(args)
+{
+  if(args.keyCode === 13)
+    document.getElementById("valueCode").focus();
+}       
+</script>
+
+

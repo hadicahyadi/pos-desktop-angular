@@ -1,0 +1,41 @@
+<div class="modal-backdrop"></div>
+<div class="modal-holder" autoscroll="false" id="modalHolder">
+
+	<div class="modal-box">
+		<h5>Create/Edit User</h5>
+		<hr>
+		<form id="dialog-form" ng-submit="vm.save()">
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+				<select ng-model="vm.user.roleId" id="roleId" class="mdl-textfield__input" >
+					<option value="1">SUPER USER</option>
+					<option value="2">KASIR</option>
+				</select>
+				<label class="mdl-textfield__label" for="supplier">Role</label>
+			</div>
+			<div ng-class="vm.isEdit(vm.user.id)">
+				<input class="mdl-textfield__input" disabled="disabled" ng-model="vm.user.id" type="text" id="id">
+				<label class="mdl-textfield__label" for="id">ID</label>
+			</div>
+			<div ng-class="vm.isEdit(vm.user.name)">
+				<input class="mdl-textfield__input" ng-model="vm.user.name" type="text" id="name">
+				<label class="mdl-textfield__label" for="name">Name</label>
+			</div>
+			<div ng-class="vm.isEdit(vm.user.username)">
+				<input class="mdl-textfield__input" ng-model="vm.user.username" type="text" id="username">
+				<label class="mdl-textfield__label" for="username">Username</label>
+			</div>
+			<div ng-class="vm.isEdit(vm.user.password)">
+				<input class="mdl-textfield__input" ng-model="vm.user.password" type="password" id="password">
+				<label class="mdl-textfield__label" for="password">Password</label>
+			</div>
+			<div class="mdl-dialog__actions">
+				<button type="submit" class="mdl-button mdl-js-button mdl-button--accent save">Save</button>
+				<button type="button" class="mdl-button mdl-js-button mdl-button--accent close" ng-click="vm.category = null">Cancel</button>
+			</div>
+		</form>
+	</div>
+
+</div>
+
+
+

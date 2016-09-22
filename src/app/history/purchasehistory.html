@@ -1,0 +1,54 @@
+<div class="mdl-grid" style="padding:0px">
+  <div class="mdl-cell mdl-cell--9-col">
+    <form ng-submit="vm.search()">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width:100%">
+        <input class="mdl-textfield__input" ng-model="vm.searchValue" style="font-size:35px"  type="text" id="searchValue" >
+        <label class="mdl-textfield__label" for="searchValue">SEARCH</label>
+        <button type="submit" style="right:0px;margin-bottom:5px;" class="mdl-button mdl-js-button mdl-button--icon mdl-button--accent">
+          <i class="material-icons">search</i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<table class="mdl-data-table mdl-js-data-table" ng-init="vm.load()">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Transaction Date</th>
+      <th>PO Number</th>
+      <th>Supplier</th>
+      <th>Total</th>
+      <th>Discount</th>
+      <th>Grand Total</th>
+      <th>Status</th>
+      <th>Due Date</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr dir-paginate="purchaseOrder in vm.purchaseOrders | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
+      <td>{{purchaseOrder.id}}</td>
+      <td>{{purchaseOrder.transactionDate | date: "dd-MM-yyyy"}}</td>
+      <td>{{purchaseOrder.ponumber}}</td>
+      <td>{{purchaseOrder.supplier.supplierName}}</td>
+      <td>{{purchaseOrder.total | currency: ''}}</td>
+      <td>{{purchaseOrder.discount | currency: ''}}</td>
+      <td>{{purchaseOrder.grandTotal | currency: ''}}</td>
+      <td>{{purchaseOrder.status}}</td>
+      <td>{{purchaseOrder.dueDate}}</td>
+      <td style="padding-top:8px"><span id="viewBtn{{purchaseOrder.id}}"><button ng-click="vm.purchaseOrder = purchaseOrder" ui-sref="main.purchasehistory.detail" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px">visibility</i></button></span>
+        <div class="mdl-tooltip" for="viewBtn{{purchaseOrder.id}}">
+          View Detail
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<dir-pagination-controls
+        boundary-links="true"
+        on-page-change="vm.pageChangeHandler(newPageNumber)">
+</dir-pagination-controls>
+
+<div ui-view autoscroll="false"></div>

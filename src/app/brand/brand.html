@@ -1,0 +1,79 @@
+
+<!-- Accent-colored raised button with ripple -->
+<button  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ui-sref="main.brand.brand-dialog" id="createBtn">
+  Create
+</button>
+<br/>
+<br/>
+<table class="mdl-data-table mdl-js-data-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Brand Name</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr dir-paginate="brand in vm.brands | itemsPerPage: vm.pageSize" current-page="vm.currentPage" total-items="vm.dataCount">
+      <td>{{brand.id}}</td>
+      <td>{{brand.brandName}}</td>
+      <td style="padding-top:8px;padding-right:12px">
+       <button id="editBtn" ui-sref="main.brand.brand-dialog" ng-click="vm.edit(brand)" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px" >edit</i></button>
+        <button id="deleteBtn" confirmed-click="vm.remove(brand.id)" ng-confirm-click="Are you sure deleting data ?" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px">clear</i></button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<dir-pagination-controls
+        boundary-links="true"
+        on-page-change="vm.pageChangeHandler(newPageNumber)">
+</dir-pagination-controls>
+
+
+<div ui-view autoscroll="false"></div>
+
+
+<!-- CREATE DATA DIALOG -->
+<dialog class="mdl-dialog">
+  <h4 class="mdl-dialog__title">Create/Edit Brand</h4>
+  <div class="mdl-dialog__content">
+    <form id="dialog-form" ng-submit="vm.save()">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input disabled="disabled" class="mdl-textfield__input" ng-model="vm.brand.id" type="text" id="idBrand">
+        <label class="mdl-textfield__label" for="idBrand">ID</label>
+      </div><br/>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" ng-model="vm.brand.brandName" type="text" id="brandName">
+        <label class="mdl-textfield__label" for="brandName">Brand Name</label>
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="submit" class="mdl-button">Save</button>
+        <button type="button" class="mdl-button" id="cancelBtn">Cancel</button>
+      </div>
+    </form>
+  </div>
+  
+</dialog>
+
+<script>
+    var dialog = document.querySelector('dialog');
+    // var showDialogButton = document.querySelector('#createBtn');
+    var showDialogButtonEdit = document.querySelector('#editBtn');
+    if (! dialog.showModal) {
+      dialogPolyfill.registerDialog(dialog);
+    }
+    // showDialogButton.addEventListener('click', function() {
+    //   dialog.showModal();
+    // });
+    showDialogButtonEdit.addEventListener('click', function() {
+      dialog.showModal();
+      console.log('clicked');
+    });
+    dialog.querySelector('#cancelBtn').addEventListener('click', function() {
+      dialog.close();
+    });
+    dialog.querySelector('#dialog-form').addEventListener('submit', function() {
+      dialog.close();
+    });
+
+</script>

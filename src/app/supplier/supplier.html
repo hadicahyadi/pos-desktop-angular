@@ -1,0 +1,40 @@
+
+<!-- Accent-colored raised button with ripple -->
+<button  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ui-sref="main.supplier.supplier-dialog" id="createBtn">
+  Create
+</button>
+<br/>
+<br/>
+<table class="mdl-data-table mdl-js-data-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Supplier Name</th>
+      <th>Address</th>
+      <th>Phone Number</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr dir-paginate="supplier in vm.suppliers | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
+      <td>{{supplier.id}}</td>
+      <td>{{supplier.supplierName}}</td>
+      <td>{{supplier.address}}</td>
+      <td>{{supplier.phoneNumber}}</td>
+      <td style="padding-top:8px;padding-right:12px">
+       <button id="editBtn" ui-sref="main.supplier.supplier-dialog" ng-click="vm.edit(supplier)" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px" >edit</i></button>
+       <button id="deleteBtn" confirmed-click="vm.remove(supplier.id)" ng-confirm-click="Are you sure deleting data ?" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px">clear</i></button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<dir-pagination-controls
+        boundary-links="true"
+        on-page-change="vm.pageChangeHandler(newPageNumber)">
+</dir-pagination-controls>
+
+
+<div ui-view autoscroll="false"></div>
+
+
+

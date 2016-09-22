@@ -1,0 +1,30 @@
+<div class="modal-backdrop"></div>
+<div class="modal-holder" autoscroll="false" id="modalHolder">
+
+	<div class="modal-box">
+		<h5>Create/Edit Setting</h5>
+		<hr>
+		<form id="dialog-form" ng-submit="vm.save()">
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" disabled="disabled" ng-model="vm.setting.id" type="text" id="settingId">
+				<label class="mdl-textfield__label" for="settingId">ID</label>
+			</div>
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" ng-model="vm.setting.settingName" type="text" id="settingName">
+				<label class="mdl-textfield__label" for="settingName">Setting Name</label>
+			</div>
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" ng-model="vm.setting.settingValue" type="text" id="settingValue">
+				<label class="mdl-textfield__label" for="settingValue">Setting Value</label>
+			</div>
+			<div class="mdl-dialog__actions">
+				<button type="submit" class="mdl-button mdl-js-button mdl-button--accent save">Save</button>
+				<button type="button" class="mdl-button mdl-js-button mdl-button--accent close" ng-click="vm.setting = null">Cancel</button>
+			</div>
+		</form>
+	</div>
+
+</div>
+
+
+

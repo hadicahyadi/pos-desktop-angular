@@ -1,0 +1,50 @@
+<div style="min-height:500px" ng-init="vm.loadSalesSummary()">
+	<div class="mdl-grid">
+		<div class="mdl-cell mdl-cell--4-col">
+			<datepicker style="width:auto" date-format="dd/MM/yyyy" selector="mdl-textfield__input">
+				<div class="mdl-textfield mdl-js-textfield">
+					<input class="mdl-textfield__input" type="text" ng-model="vm.start" placeholder="Period Start" id="periodStart">
+				</div>
+			</datepicker>
+		</div>
+		<div class="mdl-cell mdl-cell--1-col">
+			<h5>-</h5>
+		</div>
+		<div class="mdl-cell mdl-cell--4-col">
+			<datepicker style="width:auto" date-format="dd/MM/yyyy" selector="mdl-textfield__input">
+				<div class="mdl-textfield mdl-js-textfield">
+					<input class="mdl-textfield__input" type="text" ng-model="vm.end" placeholder="Period Start" id="periodEnd">
+				</div>
+			</datepicker>
+		</div>
+		<div class="mdl-cell mdl-cell--3-col" style="padding-top:15px">
+			<button type="button" ng-click="vm.loadSalesSummary()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">SUBMIT</button>
+		</div>
+
+		<button style="float:right" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="downloadBtn" ng-click="vm.download()">Download <i class="material-icons">file_download</i></button>
+	</div>
+	<hr style="border-top: 30px solid #ccc;">
+	<div class="mdl-grid">
+		<div class="mdl-cell mdl-cell--12-col" id="summaryTable">
+			<table style="width:100%">
+				<tr>
+					<td><strong>Transaction Count</strong></td>
+					<td><strong>{{vm.totalSales}}</strong></td>
+				</tr>
+				<tr>
+					<td><strong>Gross Sales</strong></td>
+					<td><strong>{{vm.grossSales | currency: ''}}</strong></td>
+				</tr>
+				<tr>
+					<td><strong>Discount</strong></td>
+					<td><strong>{{vm.discount | currency: ''}}</strong></td>
+				</tr>
+				<tr>
+					<td><strong>Net Sales</strong></td>
+					<td><strong>{{vm.netSales | currency: ''}}</strong></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+

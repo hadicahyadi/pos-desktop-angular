@@ -1,0 +1,26 @@
+<div class="modal-backdrop"></div>
+<div class="modal-holder" autoscroll="false" id="modalHolder">
+
+	<div class="modal-box">
+		<h5>Create/Edit Brand</h5>
+		<hr>
+		<form id="dialog-form" ng-submit="vm.save()">
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" disabled ng-model="vm.brand.id" type="text" id="brandId">
+				<label class="mdl-textfield__label" for="brandId">ID</label>
+			</div>
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" ng-model="vm.brand.brandName" type="text" id="brandName">
+				<label class="mdl-textfield__label" for="brandName">Brand Name</label>
+			</div>
+			<div class="mdl-dialog__actions">
+				<button type="submit" class="mdl-button mdl-js-button mdl-button--accent save">Save</button>
+				<button type="button" class="mdl-button mdl-js-button mdl-button--accent close" ng-click="vm.brand = null">Cancel</button>
+			</div>
+		</form>
+	</div>
+
+</div>
+
+
+

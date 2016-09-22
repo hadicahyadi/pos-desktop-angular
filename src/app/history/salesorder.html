@@ -1,0 +1,39 @@
+
+<!-- Accent-colored raised button with ripple -->
+<!-- <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ui-sref="main.category.category-dialog" id="createBtn">
+  Create
+</button>
+<br/>
+<br/> -->
+<table class="mdl-data-table mdl-js-data-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Transaction Date</th>
+      <th>Cashier</th>
+      <th>Payment Method</th>
+      <th>Total</th>
+      <th>Discount</th>
+      <th>Grand Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr dir-paginate="salesorder in vm.salesorders | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
+      <td>{{salesorder.id}}</td>
+      <td>{{salesorder.transactionDate | date : 'dd/MM/yyyy HH:MM'}}</td>
+      <td>{{salesorder.user.name}}</td>
+      <td>{{salesorder.transactionMethod.methodName}}</td>
+      <td>{{salesorder.total | currency: ''}}</td>
+      <td>{{salesorder.discount}}</td>
+      <td>{{salesorder.grandTotal | currency: ''}}</td>
+    </tr>
+  </tbody>
+</table>
+<dir-pagination-controls
+        boundary-links="true"
+        on-page-change="vm.pageChangeHandler(newPageNumber)">
+</dir-pagination-controls>
+
+
+<div ui-view autoscroll="false"></div>
+
