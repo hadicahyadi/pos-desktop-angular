@@ -3,11 +3,11 @@
 
   angular
     .module('posapp')
-    .controller('CustomerController',  ['$state','$http','$log','BASE_URL','$scope','customerService', CustomerController]);
+    .controller('CustomerController',  ['$state','$http','$log','BASE_URL','$scope','customerService','toastr', CustomerController]);
 
   
   /** @ngInject */
-  function CustomerController($state,$http,$log,BASE_URL,$scope,customerService) {
+  function CustomerController($state,$http,$log,BASE_URL,$scope,customerService,toastr) {
 
   	var vm = this;
 
@@ -49,11 +49,12 @@
 			$state.go("main.customer");
 			vm.customer = null;
 			vm.currentPage = 1;
+			toastr.success(response.data.message,'');
 			load();
 		},
 		function errorCallback(response){
 			$log.error(response);
-			alert('save data error!');
+			toastr.error(response.data.message,'Failed');
 		});
 	}
 
@@ -64,7 +65,7 @@
 		},
 		function errorCallback(response){
 			$log.error(response);
-			alert('delete data error!');
+			toastr.error(response.data.message,'Failed');
 		});
 	}
 

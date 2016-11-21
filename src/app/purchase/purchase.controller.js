@@ -3,14 +3,16 @@
 
   angular
   .module('posapp')
-  .controller('PurchaseController',  ['$state','$http','$log','BASE_URL','$scope','productService','supplierService','purchaseService', PurchaseController]);
+  .controller('PurchaseController',  ['$state','$http','$log','BASE_URL','$scope','productService','supplierService','purchaseService','toastr', PurchaseController]);
 
 
   /** @ngInject */
-  function PurchaseController($state,$http,$log,BASE_URL,$scope,productService,supplierService,purchaseService) {
+  function PurchaseController($state,$http,$log,BASE_URL,$scope,productService,supplierService,purchaseService,toastr) {
   	var vm = this;
 
     $scope.$parent.pageTitle= "Purchase Order";
+
+    vm.minDate = new Date().toString();
 
     vm.isEditPage = false;
     vm.product = null;
@@ -42,7 +44,7 @@
         })
 
       },function errorCallback(response){
-        $log.info(response);
+        toastr.error(response.data.message,'Failed');
       });
     }
 
@@ -52,20 +54,19 @@
       productService.getByProductCode(vm.product).then(function successCallback(response){
         $log.info(response);
         if(response.data == ""){
-          return alert('Product not found, create new product with product code '+vm.productCode+'!'); 
+          toastr.error('Product not found, create new product with product code/name : <br /><strong>'+vm.product+'</strong> !','Failed');
         }else{
           vm.cartItem = {product:response.data[0],qty:1,subtotal:0,price:response.data[0].price};
-          $log.info(vm.cartItem.product.price);
           vm.price = response.data[0].price;
-          $log.info(vm.cartItem);
+
           if(vm.cart.length > 0){
             angular.forEach(vm.cart,function(item){
               if(flag == true){
-                if(item.product.productCode != response.productCode){
+                if(item.product.productCode != vm.cartItem.product.productCode){
                   flag = true;
                 }else{
                   flag = false;
-                  alert("Product already in cart!");
+                  toastr.error(response.data.message,'');
                 }
               }
               
@@ -82,7 +83,7 @@
 
           
           vm.cartItem = null;
-          // vm.productCode = null;
+          vm.product = '';
           vm.price = null;
           vm.qty = null;
         }
@@ -90,37 +91,40 @@
         ,
       function errorCallback(response){
         $log.error(response);
-        return alert('Product not found, create new product with product code '+vm.productCode+'!');
+        return toastr.error('Product not found, create new product with product code '+vm.productCode+'!','Failed'); 
       });
     }
 
-    function loadSupplier(){
+    vm.loadSupplier = function loadSupplier(){
      supplierService.getAll(99,1).success(function(response){
-      $log.info(response);
       vm.suppliers = [].concat(response.datas);
-      
     });
 
      vm.save = function(){
-      var purchaseOrder = {
-        supplierId: vm.supplierId,
-        POnumber: vm.POnumber,
-        total: vm.total,
-        discount: vm.discount,
-        grandTotal: vm.grandTotal,
-        listDetail: vm.cart,
-        status: vm.status,
-        dueDate: vm.dueDate
+      if(vm.cart.length > 0){
+        var purchaseOrder = {
+          supplierId: vm.supplierId,
+          POnumber: vm.POnumber,
+          total: vm.total,
+          discount: vm.discount,
+          grandTotal: vm.grandTotal,
+          listDetail: vm.cart,
+          status: vm.status,
+          dueDate: vm.dueDate
+        }
+        purchaseService.save(purchaseOrder).then(function successCallback(response){
+          $log.info(response.data);
+          toastr.success(response.data.message,'');
+          refresh();
+        },
+        function errorCallback(response){
+          $log.error(response);
+          toastr.error(response.data.message,'Failed')
+        });
+      }else{
+        toastr.error('Purchase Detail is Empty!','Failed');
       }
-      purchaseService.save(purchaseOrder).then(function successCallback(response){
-        $log.info(response.data);
-        
-        refresh();
-      },
-      function errorCallback(response){
-        $log.error(response);
-        alert('save data error!');
-      });
+      
     }
 
     function refresh(){

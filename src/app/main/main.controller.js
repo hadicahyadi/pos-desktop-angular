@@ -9,7 +9,7 @@
   function MainController($scope,$cookies, $location) {
 
     $scope.user = angular.fromJson($cookies.get('user'));
-
+    console.log($scope.user.roleId);
     $scope.logout = function logout(){
       var cookies = $cookies.getAll();
       angular.forEach(cookies, function (v, k) {

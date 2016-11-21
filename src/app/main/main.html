@@ -20,54 +20,57 @@
     <header class="demo-drawer-header mdl-color--indigo-500" style="color:white">
       <img src="./assets/images/logoSmall.png" style="margin-top:5px"/><br/>
       <p>posapp v1.0</p>
-      </header>
-      <nav class="mdl-navigation ">
-        <a class="mdl-navigation__link" ui-sref="main.dashboard"><i class="material-icons">dashboard</i>Dashboard</a>
+    </header>
+    <nav class="mdl-navigation ">
+      <a class="mdl-navigation__link" ui-sref="main.dashboard"><i class="material-icons">dashboard</i>Dashboard</a>
 
-        <a class="mdl-navigation__link" href=""><i class="material-icons">description</i>Master
-          <button id="masterBtn" class="mdl-button mdl-js-button mdl-button--icon">
-           <i class="material-icons">arrow_drop_down</i>
-         </button>
-       </a>
-       <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="masterBtn">
-        <li class="mdl-menu__item" ui-sref="main.brand">Brand</li>
-        <li class="mdl-menu__item" ui-sref="main.category">Category</li>
-        <li class="mdl-menu__item" ui-sref="main.product">Product</li>
-        <li class="mdl-menu__item" ui-sref="main.supplier">Supplier</li>
-        <li class="mdl-menu__item" ui-sref="main.customer">Customer</li>
-      </ul>
+      <a class="mdl-navigation__link" href="" ng-show="user.roleId == 1"><i class="material-icons">description</i>Master
+        <button id="masterBtn" class="mdl-button mdl-js-button mdl-button--icon">
+         <i class="material-icons">arrow_drop_down</i>
+       </button>
+     </a>
+     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="masterBtn">
+      <li class="mdl-menu__item" ui-sref="main.brand">Brand</li>
+      <li class="mdl-menu__item" ui-sref="main.category">Category</li>
+      <li class="mdl-menu__item" ui-sref="main.product">Product</li>
+      <li class="mdl-menu__item" ui-sref="main.supplier">Supplier</li>
+      <li class="mdl-menu__item" ui-sref="main.customer">Customer</li>
+    </ul>
 
-      <a class="mdl-navigation__link" ui-sref="main.purchase"><i class="material-icons">content_paste</i>Purchase</a>
-      <a class="mdl-navigation__link" ui-sref="main.cashier"><i class="material-icons">shopping_cart</i>Cashier</a>
-      <a class="mdl-navigation__link" href=""><i class="material-icons">history</i>History
-          <button id="historyBtn" class="mdl-button mdl-js-button mdl-button--icon">
-           <i class="material-icons">arrow_drop_down</i>
-         </button>
-       </a>
-       <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="historyBtn">
-        <li class="mdl-menu__item" ui-sref="main.purchasehistory">Purchase</li>
-        <li class="mdl-menu__item" ui-sref="main.salesorder">Sales</li>
-      </ul>
-      <a class="mdl-navigation__link" href=""><i class="material-icons">assignment</i>Report
-          <button id="reportBtn" class="mdl-button mdl-js-button mdl-button--icon">
-           <i class="material-icons">arrow_drop_down</i>
-         </button>
-       </a>
-       <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="reportBtn">
-        <li class="mdl-menu__item" ui-sref="main.salessummary">End of Day</li>
-        <li class="mdl-menu__item" ui-sref="main.transactionsummary">Transaction Summary</li>
-      </ul>
+    <a class="mdl-navigation__link" ui-sref="main.purchase" ng-show="user.roleId == 1"><i class="material-icons">content_paste</i>Purchase</a>
 
-      <a class="mdl-navigation__link" ui-sref="main.user"><i class="material-icons">group</i>User</a>
+    <a class="mdl-navigation__link" ui-sref="main.cashier"><i class="material-icons">shopping_cart</i>Cashier</a>
 
-      <a class="mdl-navigation__link" ui-sref="main.setting"><i class="material-icons">settings</i>Setting</a>
-    </nav>
+    <a class="mdl-navigation__link" href="" ng-show="user.roleId == 1"><i class="material-icons" ng-show="user.roleId == 1">history</i>History
+      <button id="historyBtn" class="mdl-button mdl-js-button mdl-button--icon">
+       <i class="material-icons">arrow_drop_down</i>
+     </button>
+   </a>
+   <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="historyBtn">
+    <li class="mdl-menu__item" ui-sref="main.purchasehistory">Purchase</li>
+    <li class="mdl-menu__item" ui-sref="main.salesorder">Sales</li>
+  </ul>
+
+  <a class="mdl-navigation__link" href=""><i class="material-icons">assignment</i>Report
+    <button id="reportBtn" class="mdl-button mdl-js-button mdl-button--icon">
+     <i class="material-icons">arrow_drop_down</i>
+   </button>
+ </a>
+ <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="reportBtn">
+  <li class="mdl-menu__item" ui-sref="main.salessummary">End of Day</li>
+  <li class="mdl-menu__item" ui-sref="main.transactionsummary" ng-show="user.roleId == 1">Transaction Summary</li>
+</ul>
+
+<a class="mdl-navigation__link" ui-sref="main.user" ng-show="user.roleId == 1"><i class="material-icons">group</i>User</a>
+
+<!-- <a class="mdl-navigation__link" ui-sref="main.setting"><i class="material-icons">settings</i>Setting</a> -->
+</nav>
+</div>
+
+<main class="mdl-layout__content">
+  <div class="page-content">
+    <div ui-view style="overflow-x:auto"></div>
   </div>
-
-  <main class="mdl-layout__content">
-    <div class="page-content">
-      <div ui-view style="overflow-x:auto"></div>
-    </div>
-  </main>
+</main>
 
 </div>

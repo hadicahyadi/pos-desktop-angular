@@ -36,7 +36,19 @@
      controller: "DashboardController",
      controllerAs: "vm",
      parent: "main",
-     authenticate: true    
+     authenticate: true,
+     resolve: {
+       dataSales: function(dashboardService){
+          return dashboardService.getSalesSummary().then(function successCallback(response){
+            console.log(response);
+            return response;
+          },
+          function errorCallback(response){
+            return response;
+          });
+        }
+      
+     }   
    })
 
      //--- BRAND STATE ---
@@ -127,8 +139,11 @@
        controller: "CashierController",
        controllerAs: "vm",
        parent: "main",
-       authenticate: true
-     })
+       authenticate: true,
+       onEnter: function() {
+        setTimeout(function() { jQuery('#valueCode').focus() }, 20);
+      }
+    })
 
       //--- SUPPLIER STATE ---
       .state("main.supplier", {

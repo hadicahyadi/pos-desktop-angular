@@ -12,26 +12,34 @@
 
 		vm.error = null;
 		vm.isError = false;
-		vm.username = null;
-		vm.password = null;
+		vm.username = '';
+		vm.password = '';
 		vm.barShow = false;
 
-		vm.login = function login(){
+		vm.login = function login(form){
+
 			authenticationService.login(vm.username,md5.createHash(vm.password || '')).then(function successCallback(response){
 				$log.info(response);
-				$cookies.put('user',JSON.stringify(response.data));
-				//--- Call Session Api for global attribute
-				sessionService.getAll().success(function(response){
-					$log.info(response);
-					$cookies.put('sessionAttribute',JSON.stringify(response));
-				});
-
-				$location.path("/dashboard");
+				if(response.status > 0){
+					$cookies.put('user',JSON.stringify(response.data));
+					//--- Call Session Api for global attribute
+					sessionService.getAll().success(function(response){
+						$log.info(response);
+						$cookies.put('sessionAttribute',JSON.stringify(response));
+					});
+					$location.path("/dashboard");
+				}else{
+					vm.barShow = false;
+					vm.error = null;
+				}
+				
+				
 			},
 			function errorCallback(response){
 				$log.info(response);
 				vm.isError = true;
-				vm.error = response.data.message
+				vm.error = response.data.message;
+				vm.barShow = false;
 			});
 		};
 

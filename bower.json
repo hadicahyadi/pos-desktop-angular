@@ -21,6 +21,7 @@
     "file-saver": "^1.3.2",
     "pdfmake": "^0.1.20",
     "angularjs-datepicker": "^2.1.6",
+    "angular-validation": "^1.4.2",
     "allmighty-autocomplete": "~1.0.140706"
   },
   "devDependencies": {

@@ -3,11 +3,11 @@
 
   angular
     .module('posapp')
-    .controller('UserController',  ['$state','$http','$log','BASE_URL','$scope','userService', UserController]);
+    .controller('UserController',  ['$state','$http','$log','BASE_URL','$scope','userService','toastr', UserController]);
 
 
   /** @ngInject */
-  function UserController($state,$http,$log,BASE_URL,$scope,userService) {
+  function UserController($state,$http,$log,BASE_URL,$scope,userService,toastr) {
   	var vm = this;
 
     $scope.$parent.pageTitle= "User";
@@ -51,11 +51,12 @@
 			$state.go("main.user");
 			vm.user = null;
 			vm.currentPage = 1;
+			toastr.success(response.data.message,'');
 			load();
 		},
 		function errorCallback(response){
 			$log.error(response);
-			alert('save data error!');
+			toastr.error(response.data.message,'Failed');
 		});
 	}
 
@@ -66,7 +67,7 @@
 		},
 		function errorCallback(response){
 			$log.error(response);
-			alert('delete data error!');
+			toastr.success(response.data.message,'Failed');
 		});
 	}
 

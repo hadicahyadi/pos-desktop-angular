@@ -3,11 +3,11 @@
 
   angular
     .module('posapp')
-    .controller('PurchaseHistoryController',  ['$state','$http','$log','BASE_URL','$scope','purchaseService', PurchaseHistoryController]);
+    .controller('PurchaseHistoryController',  ['$state','$http','$log','BASE_URL','$scope','purchaseService','toastr', PurchaseHistoryController]);
 
 
   /** @ngInject */
-  function PurchaseHistoryController($state,$http,$log,BASE_URL,$scope,purchaseService) {
+  function PurchaseHistoryController($state,$http,$log,BASE_URL,$scope,purchaseService,toastr) {
   	var vm = this;
 
     $scope.$parent.pageTitle= "Purchase Order History";
@@ -22,9 +22,7 @@
 	vm.selectedPO = null;
 	vm.purchaseOrder = null;
 
-	load();
-
-	function load(){
+	vm.load = function(){
 		purchaseService.getAll(vm.pageSize,vm.currentPage).success(function(response){
 			$log.info(response);
 			vm.purchaseOrders = [].concat(response.datas);
@@ -37,10 +35,14 @@
 			$log.info(response);
 			vm.purchaseOrders = [].concat(response.data);
 			vm.dataCount = response.pageCount;
+			vm.searchValue = '';
+			if(vm.purchaseOrders.length == 0){
+				toastr.success('No data found','Result');
+			}
 		},
 		function errorCallback(response){
 			$log.info(response);
-			alert(response.message);
+			toastr.error(response.data.message,'Failed');
 		});
 	}
 
@@ -51,7 +53,7 @@
 		},
 		function errorCallback(response){
 			$log.info(response);
-			alert(response.message);
+			toastr.error(response.data.message,'Failed');
 		});
 	}
 

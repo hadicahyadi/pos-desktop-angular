@@ -3,11 +3,11 @@
 
   angular
     .module('posapp')
-    .controller('SupplierController',  ['$state','$http','$log','BASE_URL','$scope','supplierService', SupplierController]);
+    .controller('SupplierController',  ['$state','$http','$log','BASE_URL','$scope','supplierService','toastr', SupplierController]);
 
   
   /** @ngInject */
-  function SupplierController($state,$http,$log,BASE_URL,$scope,supplierService) {
+  function SupplierController($state,$http,$log,BASE_URL,$scope,supplierService,toastr) {
 
   	var vm = this;
 
@@ -52,11 +52,12 @@
 			$state.go("main.supplier");
 			vm.supplier = null;
 			vm.currentPage = 1;
+			toastr.success(response.data.message,'');
 			load();
 		},
 		function errorCallback(response){
 			$log.error(response);
-			alert('save data error!');
+			toastr.error(response.data.message,'Failed');
 		});
 	}
 
@@ -67,7 +68,7 @@
 		},
 		function errorCallback(response){
 			$log.error(response);
-			alert('delete data error!');
+			toastr.success(response.data.message,'Failed');
 		});
 	}
 

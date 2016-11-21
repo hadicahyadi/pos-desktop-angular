@@ -3,7 +3,7 @@
 <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ui-sref="main.product.product-dialog" id="createBtn">
   Create
 </button>
-<button style="float:right" type="button" ng-click="vm.download()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="exportBtn">Download <i class="material-icons">file_download</i></button>
+<button style="float:right" type="button" ng-click="vm.download()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="exportBtn">Export</button>
 <br/>
 <br/>
 <table class="mdl-data-table mdl-js-data-table">
@@ -16,6 +16,7 @@
       <th>Price</th>
       <th>Pcs Price</th>
       <th>Lot Price</th>
+      <th>Min Lot</th>
       <th>Min Stock</th>
       <th>Stock</th>
       <th>Description</th>
@@ -28,9 +29,10 @@
       <td>{{product.productName}}</td>
       <td>{{product.brand.brandName}}</td>
       <td>{{product.category.categoryName}}</td>
-      <td>{{product.price}}</td>
-      <td>{{product.pcsPrice}}</td>
-      <td>{{product.lotPrice}}</td>
+      <td>{{product.price | currency:''}}</td>
+      <td>{{product.pcsPrice | currency:''}}</td>
+      <td>{{product.lotPrice | currency:''}}</td>
+      <td>{{product.minLot}}</td>
       <td>{{product.minStock}}</td>
       <td>{{product.stock}}</td>
       <td>{{product.description}}</td>
@@ -49,12 +51,3 @@
 <div ui-view autoscroll="false"></div>
 
 
-<script>
-
-    $(document).ready(function(){
-
-      window.componentHandler.upgradeAllRegistered(); 
-    });
-    
-
-</script>

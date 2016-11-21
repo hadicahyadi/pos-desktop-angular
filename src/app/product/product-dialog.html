@@ -4,12 +4,12 @@
 	<div class="modal-box" style="width:50%">
 		<h5>Create/Edit Product</h5>
 		<hr>
-		<form id="dialog-form" ng-submit="vm.save()">
+		<form id="dialog-form" name="form">
 			
 			<div class="mdl-grid" style="padding:0px">
 				<div class="mdl-cell mdl-cell--6-col">
 					<div ng-class="vm.isEdit()">
-						<select id="brand" class="mdl-textfield__input" ng-model="vm.product.brandId" ng-options="brand.id as brand.brandName for brand in vm.brands">
+						<select id="brand" class="mdl-textfield__input" required ng-model="vm.product.brandId" ng-options="brand.id as brand.brandName for brand in vm.brands">
 						</select>
 						<label class="mdl-textfield__label" for="brand">Brand</label>
 
@@ -19,7 +19,7 @@
 
 				<div class="mdl-cell mdl-cell--6-col">
 					<div ng-class="vm.isEdit()"  >
-						<select id="category" class="mdl-textfield__input" ng-model="vm.product.categoryId" ng-options="category.id as category.categoryName for category in vm.categories">
+						<select id="category" class="mdl-textfield__input" required ng-model="vm.product.categoryId" ng-options="category.id as category.categoryName for category in vm.categories">
 						</select>
 						<label class="mdl-textfield__label" for="category">Category</label>
 					</div>
@@ -29,14 +29,14 @@
 			<div class="mdl-grid" style="padding:0px">
 				<div class="mdl-cell mdl-cell--6-col">
 					<div ng-class="vm.isEdit()">
-						<input class="mdl-textfield__input" ng-model="vm.product.productCode" type="text" id="productCode">
+						<input class="mdl-textfield__input" required ng-model="vm.product.productCode" type="text" id="productCode">
 						<label class="mdl-textfield__label" for="productCode">Product Code</label>
 					</div>
 				</div>
 
 				<div class="mdl-cell mdl-cell--6-col">
 					<div ng-class="vm.isEdit()">
-						<input class="mdl-textfield__input" ng-model="vm.product.productName" type="text" id="productName">
+						<input class="mdl-textfield__input" required ng-model="vm.product.productName" type="text" id="productName">
 						<label class="mdl-textfield__label" for="productName">Product Name</label>
 					</div>
 				</div>
@@ -45,14 +45,14 @@
 			<div class="mdl-grid" style="padding:0px">
 				<div class="mdl-cell mdl-cell--6-col">
 					<div ng-class="vm.isEdit()">
-						<input class="mdl-textfield__input" ng-model="vm.product.price" type="text" id="pcsPrice">
+						<input class="mdl-textfield__input" required ng-model="vm.product.price" type="text" id="pcsPrice">
 						<label class="mdl-textfield__label" for="pcsPrice">Price</label>
 					</div>
 				</div>
 
 				<div class="mdl-cell mdl-cell--6-col">
 					<div ng-class="vm.isEdit()">
-						<input class="mdl-textfield__input" ng-model="vm.product.lotPrice" type="text" id="lotPrice">
+						<input class="mdl-textfield__input" required ng-model="vm.product.lotPrice" type="text" id="lotPrice">
 						<label class="mdl-textfield__label" for="lotPrice">Lot Price</label>
 					</div>
 				</div>
@@ -61,19 +61,34 @@
 			<div class="mdl-grid" style="padding:0px">
 				<div class="mdl-cell mdl-cell--6-col">
 					<div ng-class="vm.isEdit()">
-						<input class="mdl-textfield__input" ng-model="vm.product.pcsPrice" type="text" id="pcsPrice">
-						<label class="mdl-textfield__label" for="pcsPrice">Pcs Price</label>
+						<input class="mdl-textfield__input" required ng-model="vm.product.minLot" type="text" id="lotPrice">
+						<label class="mdl-textfield__label" for="lotPrice">Min Lot</label>
 					</div>
 				</div>
-				
+
 				<div class="mdl-cell mdl-cell--6-col">
 					<div ng-class="vm.isEdit()">
-						<input class="mdl-textfield__input" ng-model="vm.product.minStock" type="number" id="minStock">
-						<label class="mdl-textfield__label" for="minStock">Minimun Stock</label>
+						<input class="mdl-textfield__input" required ng-model="vm.product.pcsPrice" type="text" id="pcsPrice">
+						<label class="mdl-textfield__label" for="pcsPrice">Pcs Price</label>
 					</div>
 				</div>
 			</div>
 
+			<div class="mdl-grid" style="padding:0px">
+				<div class="mdl-cell mdl-cell--6-col">
+					<div ng-class="vm.isEdit()">
+						<input class="mdl-textfield__input" required ng-model="vm.product.minStock" type="number" id="minStock">
+						<label class="mdl-textfield__label" for="minStock">Minimun Stock</label>
+					</div>
+				</div>
+
+				<div class="mdl-cell mdl-cell--6-col" >
+					<div ng-class="vm.isEdit()">
+						<input class="mdl-textfield__input" ng-disabled="vm.isDisabled" ng-model="vm.product.stock" type="number" id="stock">
+						<label class="mdl-textfield__label" for="stock">Stock</label>
+					</div>
+				</div>
+			</div>
 			<div class="mdl-grid" style="padding:0px">
 				<div class="mdl-cell mdl-cell--6-col">
 					<div ng-class="vm.isEdit()">
@@ -82,9 +97,9 @@
 					</div>
 				</div>
 
-				<div class="mdl-cell mdl-cell--6-col" style="padding-top:20px">
-					<button type="submit" class="mdl-button mdl-js-button mdl-button--accent save">Save</button>&nbsp;
-					<button type="button" class="mdl-button mdl-js-button mdl-button--accent close" ng-click="vm.product = null;vm.isEditPage = false">Cancel</button>
+				<div class="mdl-cell mdl-cell--6-col" style="padding-top:0px">
+					<button type="submit" ng-click="form.$valid && vm.save()" class="mdl-button mdl-js-button mdl-button--accent save">Save</button>&nbsp;
+					<button type="button" class="mdl-button mdl-js-button mdl-button--accent close" ng-click="vm.isDisabled = true;vm.product = null;vm.isEditPage = false">Cancel</button>
 				</div>
 			</div>
 		</form>

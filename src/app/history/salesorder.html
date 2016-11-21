@@ -8,24 +8,26 @@
 <table class="mdl-data-table mdl-js-data-table">
   <thead>
     <tr>
-      <th>ID</th>
+      <th>No</th>
       <th>Transaction Date</th>
       <th>Cashier</th>
       <th>Payment Method</th>
       <th>Total</th>
       <th>Discount</th>
       <th>Grand Total</th>
+      <th>Customer</th>
     </tr>
   </thead>
   <tbody>
     <tr dir-paginate="salesorder in vm.salesorders | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
-      <td>{{salesorder.id}}</td>
+      <td>{{$index+1}}</td>
       <td>{{salesorder.transactionDate | date : 'dd/MM/yyyy HH:MM'}}</td>
       <td>{{salesorder.user.name}}</td>
       <td>{{salesorder.transactionMethod.methodName}}</td>
       <td>{{salesorder.total | currency: ''}}</td>
-      <td>{{salesorder.discount}}</td>
+      <td>{{salesorder.discount | currency: ''}}</td>
       <td>{{salesorder.grandTotal | currency: ''}}</td>
+      <td>{{salesorder.customer.customerName}}</td>
     </tr>
   </tbody>
 </table>

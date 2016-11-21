@@ -3,7 +3,7 @@
     <form ng-submit="vm.search()">
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width:100%">
         <input class="mdl-textfield__input" ng-model="vm.searchValue" style="font-size:35px"  type="text" id="searchValue" >
-        <label class="mdl-textfield__label" for="searchValue">SEARCH</label>
+        <label class="mdl-textfield__label" for="searchValue">SEARCH PO NUMBER, STATUS, OR SUPPLIER</label>
         <button type="submit" style="right:0px;margin-bottom:5px;" class="mdl-button mdl-js-button mdl-button--icon mdl-button--accent">
           <i class="material-icons">search</i>
         </button>
@@ -11,11 +11,11 @@
     </form>
   </div>
 </div>
-
-<table class="mdl-data-table mdl-js-data-table" ng-init="vm.load()">
+<button type="button" ng-click="vm.load()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="refreshBtn">Refresh</button>
+<table class="mdl-data-table mdl-js-data-table" style="margin-top:20px" ng-init="vm.load()">
   <thead>
     <tr>
-      <th>ID</th>
+      <th>No</th>
       <th>Transaction Date</th>
       <th>PO Number</th>
       <th>Supplier</th>
@@ -29,7 +29,7 @@
   </thead>
   <tbody>
     <tr dir-paginate="purchaseOrder in vm.purchaseOrders | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
-      <td>{{purchaseOrder.id}}</td>
+      <td>{{$index+1}}</td>
       <td>{{purchaseOrder.transactionDate | date: "dd-MM-yyyy"}}</td>
       <td>{{purchaseOrder.ponumber}}</td>
       <td>{{purchaseOrder.supplier.supplierName}}</td>

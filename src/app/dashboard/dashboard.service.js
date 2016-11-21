@@ -17,6 +17,10 @@
              return $http.get(BASE_URL+"/dashboard/lowStockProduct");
         }
 
+        this.getSalesOrderCredit = function (){
+             return $http.get(BASE_URL+"/dashboard/salesOrderCredit");
+        }
+
     }]);
 
 })();

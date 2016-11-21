@@ -3,11 +3,11 @@
 
   angular
   .module('posapp')
-  .controller('TransactionSummaryController',  ['$state','$http','$log','BASE_URL','$scope','reportService', TransactionSummaryController]);
+  .controller('TransactionSummaryController',  ['$state','$log','BASE_URL','$scope','reportService', TransactionSummaryController]);
 
 
   /** @ngInject */
-  function TransactionSummaryController($state,$http,$log,BASE_URL,$scope,reportService) {
+  function TransactionSummaryController($state,$log,BASE_URL,$scope,reportService) {
   	
     var vm = this;
     $scope.$parent.pageTitle = 'Transaction Summary';
@@ -28,8 +28,6 @@
         $log.info(response);
       });
     }
-
-    
  }
 
 })();

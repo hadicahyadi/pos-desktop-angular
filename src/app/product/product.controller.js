@@ -3,13 +3,14 @@
 
   angular
     .module('posapp')
-    .controller('ProductController',  ['$state','$http','$log','BASE_URL','$scope','productService','brandService','categoryService', ProductController]);
+    .controller('ProductController',  ['$state','$http','$log','BASE_URL','$scope','productService','brandService','categoryService','$filter',
+    'toastr', ProductController]);
 
 
 	
 
   /** @ngInject */
-  function ProductController($state,$http,$log,BASE_URL,$scope,productService,brandService,categoryService) {
+  function ProductController($state,$http,$log,BASE_URL,$scope,productService,brandService,categoryService,$filter,toastr) {
   	var vm = this;
 
     $scope.$parent.pageTitle= "Product";
@@ -26,6 +27,7 @@
     	productName: null,
     	pcsPrice: null,
     	lotPrice: null,
+    	minLot: null,
     	minStock: null,
     	stock: null,
     	description: null
@@ -34,7 +36,8 @@
     vm.products = [];
     vm.dataCount = 0;
     vm.currentPage = 1;
-    vm.pageSize = 5;
+    vm.pageSize = 8;
+    vm.isDisabled = true;
 
     load();
     loadBrand();
@@ -70,17 +73,19 @@
 			$state.go("main.product");
 			vm.product = null;
 			vm.currentPage = 1;
+			toastr.success(response.data.message,'');
 			load();
 		},
 		function errorCallback(response){
 			$log.error(response);
-			alert('save data error!');
+			toastr.error(response.data.message,'Failed');
 		});
 	}
 
 	vm.edit = function edit(product){
 		vm.isEditPage = true;  
 		vm.product = product;
+		vm.isDisabled = false;
 	}
 
 	vm.isEdit = function isEdit(){
@@ -116,26 +121,29 @@
 				// $log.info(JSON.parse(JSON.stringify(row)));
 				switch(index){
 					case 0:
-						dataRow.push({text:arr[4]+''+'',margin:[5,5,0,0]});
+						dataRow.push({text:arr[4]+''+'',margin:[5,5,0,0],fontSize:10});
 						break;
 					case 1:
-						dataRow.push({text:arr[5]+''+'',margin:[5,5,0,0]});
+						dataRow.push({text:arr[5]+''+'',margin:[5,5,0,0],fontSize:10});
 						break;
 					case 2:
-						dataRow.push({text:arr[13].brandName+'',margin:[5,5,0,0]});
+						dataRow.push({text:arr[14].brandName+'',margin:[5,5,0,0],fontSize:10});
 						break;
 					case 3:
-						dataRow.push({text:arr[9]+''+'',margin:[5,5,0,0]});
+						dataRow.push({text:arr[9]+''+'',margin:[5,5,0,0],fontSize:10});
 						break;
 					case 4:
-						dataRow.push({text:arr[10]+''+'',margin:[5,5,0,0]});
+						dataRow.push({text:arr[10]+''+'',margin:[5,5,0,0],fontSize:10});
 						break;
 					case 5:
-						dataRow.push({text:arr[10]+''+'',margin:[5,5,0,0]});
+						dataRow.push({text:currencyFormat(arr[7])+''+'',margin:[5,5,0,0],fontSize:10});
 						break;
 					case 6:
-						dataRow.push({text:arr[10]+''+'',margin:[5,5,0,0]});
+						dataRow.push({text:currencyFormat(arr[8])+''+'',margin:[5,5,0,0],fontSize:10});
 						break;
+					// case 7:
+					// 	dataRow.push({text:currencyFormat(arr[8])+''+'',margin:[5,5,0,0]});
+					// 	break;
 				}
 				
 			});
@@ -145,11 +153,15 @@
 		return body;
 	}
 
+	function currencyFormat(value){
+		return $filter('currency')(value,'');
+	}
+
 	function table(columns) {
 		return {
 			style: 'productTable',
 			table: {
-				widths: [ '*', '*', '*' ,'*','*'],
+				widths: [ 85, 100, 55 ,25,25,'*','*'],
 				headerRows: 1,
 				body:buildTableBody(columns)
 			},
@@ -160,11 +172,15 @@
 
 
 	function getDefinition(){
+		var date = new Date();
+		vm.dateStr = ('0' + date.getDate()).slice(-2)+'/'+('0' + (date.getMonth() + 1)).slice(-2)+'/'+date.getFullYear();
 		vm.docDefinition = {
 			content: [
 			{
-				text: 'Data Product', fontSize: 14, bold: true,margin: [0,20],
-				alignment: 'center' ,
+				text: 'Data Product \n '+vm.dateStr, fontSize: 14, bold: true,margin: [0,20],
+				alignment: 'center',
+				pageSize: 'A5',
+				
 			},
 			// {
 				table(['Product Code','Product Name','Brand','Min Stock','Stock','Pcs Price','Lot Price'])
@@ -191,9 +207,10 @@
 	vm.download = function(){
 		// open the PDF in a new window
 		pdfMake.createPdf(getDefinition()).open();
-
+		var date = new Date();
+		vm.filename = 'DATA_PRODUCT_'+date.getFullYear()+('0' + (date.getMonth() + 1)).slice(-2)+('0' + date.getDate()).slice(-2);
 		// download the PDF
-		pdfMake.createPdf(getDefinition()).download('product.pdf');
+		pdfMake.createPdf(getDefinition()).download(filename+'.pdf');
 	}
 
 	vm.pageChangeHandler = function pageChangeHandler(pageNumber){

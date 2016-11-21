@@ -10,7 +10,7 @@
 				<label class="mdl-textfield__label" for="supplierId">ID</label>
 			</div>
 			<div ng-class="vm.isEdit()">
-				<input class="mdl-textfield__input" ng-model="vm.supplier.supplierName" type="text" id="supplierName">
+				<input class="mdl-textfield__input" ng-model="vm.supplier.supplierName" required type="text" id="supplierName">
 				<label class="mdl-textfield__label" for="supplierName">Supplier Name</label>
 			</div>
 			<div ng-class="vm.isEdit()">
@@ -18,7 +18,7 @@
 				<label class="mdl-textfield__label" for="address">Address</label>
 			</div>
 			<div ng-class="vm.isEdit()">
-				<input class="mdl-textfield__input" ng-model="vm.supplier.phoneNumber" type="text" id="phoneNumber">
+				<input class="mdl-textfield__input" ng-model="vm.supplier.phoneNumber" required type="text" id="phoneNumber">
 				<label class="mdl-textfield__label" for="phoneNumber">Phone Number</label>
 			</div>
 			<div class="mdl-dialog__actions">

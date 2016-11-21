@@ -4,29 +4,33 @@
   angular
     .module('posapp')
     .controller('CashierController',  ['$state','$http','$log','BASE_URL','$scope','$cookies','productService','salesOrderService'
-      ,'transactionMethodService','customerService', CashierController]);
+      ,'transactionMethodService','customerService','toastr', CashierController]);
 
   
   /** @ngInject */
-  function CashierController($state,$http,$log,BASE_URL,$scope,$cookies,productService,salesOrderService,transactionMethodService,customerService) {
+  function CashierController($state,$http,$log,BASE_URL,$scope,$cookies,productService,salesOrderService,transactionMethodService,customerService,toastr) {
 
   	var vm = this;
   	$scope.$parent.pageTitle = "Cashier";
 
+    vm.transactionMethodId = null;
     vm.total = 0;
     vm.subtotal = 0;
     vm.transactionMethod = {id:null,methodName:null};
-    vm.minLot = angular.fromJson($cookies.get('sessionAttribute')).MIN_LOT;
-    $log.info(vm.minLot);
+    // vm.minLot = angular.fromJson($cookies.get('sessionAttribute')).MIN_LOT;
+    
   	vm.product = {
-    	id: null,
-    	brandId: null,
-    	categoryId: null,
-    	productCode: null,
-    	productName: null,
-    	pcsPrice: null,
-    	lotPrice: null,
-    	description: null
+      id: null,
+      brandId: null,
+      categoryId: null,
+      productCode: null,
+      productName: null,
+      pcsPrice: null,
+      lotPrice: null,
+      minLot: null,
+      minStock: null,
+      stock: null,
+      description: null
     };
 
     vm.customer = {
@@ -51,19 +55,20 @@
 
   	vm.cart = [];
     vm.customers = [];
-    vm.customerId = 0;
+    vm.customerId = null;
     vm.transactionMethods = [];
     vm.payment = null;
     vm.change = 0;
     vm.productCode = "";
     vm.discount = null;
     vm.grandTotal = 0;
+    vm.paymentLabel = "Payment";
    
     vm.updateProduct = function(value){
       productService.getByProductCode(value).then(function successCallback(response){
         $log.info(response);
-        /*vm.products = [];
-        vm.products = response.data;*/
+        // vm.products = [];
+        // vm.products = response.data;
         angular.forEach(response.data,function(item){
           vm.products = [];
           vm.products.push(item.productName);
@@ -84,8 +89,6 @@
       transactionMethodService.getAll(99,1).success(function(response){
         $log.info(response);
         vm.transactionMethods = [].concat(response.datas);
-        
-        vm.transactionMethod = vm.transactionMethods[0];
       });
     }
 
@@ -93,19 +96,12 @@
       customerService.getAll(99,1).success(function(response){
         $log.info(response);
         vm.customers = [].concat(response.datas);
-        vm.customer = vm.transactionMethods[0];
       });
     }
 
-    /*vm.checkQty = function(){
-      if(){
-        
-      }
-    }*/
-
     vm.changeQty = function(item,index){
-      if(item.qty >= vm.minLot){
-        $log.info("LUSINAN");
+      if(item.qty >= item.product.minLot){
+        $log.info(item.product.minLot);
         item.sellPrice = item.product.lotPrice;
       }else if(item.qty < vm.minLot){
         item.sellPrice = item.product.pcsPrice;
@@ -113,12 +109,20 @@
     }
 
     vm.changeMethod = function(method){
-      $log.info("method="+method.methodNamer);
-      if(method.methodName != 'CASH'){
-        vm.payment = vm.getTotal();
+      $log.info("method="+method.methodName);
+      vm.transactionMethod = method;
+      if(method.methodName == 'DEBIT CARD'){
+        vm.paymentLabel = "Payment";
+        vm.payment = vm.grandTotal;
         vm.isFocused = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-focused";
+      }else if(method.methodName == 'DEBT'){
+        vm.paymentLabel = "Down Payment (DP)";
+        vm.isFocused = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-focused";
+        vm.payment = 0;
       }else{
+        vm.paymentLabel = "Payment";
         vm.payment = null;
+        vm.isFocused = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label";
       }
     }
 
@@ -136,17 +140,17 @@
           if(vm.cart.length > 0){
             angular.forEach(vm.cart,function(item){
               if(flag == true){
-                if(item.product.productCode != response.productCode){
+                if(item.product.productCode != vm.cartItem.product.productCode){
                   flag = true;
                 }else{
                   flag = false;
-                  alert("Product already in cart!");
+                  toastr.error('Product alredy in cart !','Failed');
                 }
               }
 
             });
 
-            $log.info("flag="+flag);
+            
             if(flag == true){
               // vm.cart.push(vm.cartItem);
               vm.cart.unshift(vm.cartItem);
@@ -164,7 +168,7 @@
       },
       function errorCallback(response){
         $log.info(response);
-        alert(response.data.message);
+        toastr.error(response.data.message,'Failed');
       });
 
   	}
@@ -185,33 +189,69 @@
     };
 
     vm.save = function(){
-      if(vm.payment < vm.grandTotal){
-        alert('Payment must be greater than total!');
+
+      $log.info('customer id='+vm.customerId);
+
+      var salesOrder = {
+        userId: angular.fromJson($cookies.get('user')).id,
+        total: vm.total,
+        discount: vm.discount,
+        grandTotal: vm.grandTotal,
+        transactionMethodId: vm.transactionMethod.id,
+        change: vm.change,
+        listDetail: vm.cart,
+        transactionMethod: vm.transactionMethod,
+        payment: vm.payment,
+        customerId: vm.customerId,
+        status: null,
+        downPayment: 0
+      };
+
+      if(vm.transactionMethod.methodName == 'DEBT' && vm.payment == 0){
+        salesOrder.status = 'UNPAID';
+      }else if(vm.transactionMethod.methodName == 'DEBT' && vm.payment > 0){
+        salesOrder.downPayment = vm.payment;
+        salesOrder.status = 'PARTIALLY PAID';
       }else{
-        vm.change = vm.payment - vm.grandTotal;
-        var salesOrder = {
-          userId: angular.fromJson($cookies.get('user')).id,
-          total: vm.total,
-          discount: vm.discount,
-          grandTotal: vm.grandTotal,
-          transactionMethodId: vm.transactionMethod.id,
-          change: vm.change,
-          listDetail: vm.cart,
-          transactionMethod: vm.transactionMethod,
-          payment: vm.payment,
-          customerId: vm.customerId
+        salesOrder.status = 'PAID';
+      }
+
+      //--- VALIDATION ---
+      if(validateForm() == true){
+
+        if(vm.transactionMethod.methodName != 'DEBT'){
+          vm.change = vm.payment - vm.grandTotal;
         }
+        
         salesOrderService.save(salesOrder).then(function successCallback(response){
           $log.info(response);
-          if(response.data.warningMessage != undefined){
-            alert(response.data.warningMessage);
-          }
+          toastr.success(response.data.message,'')
           refresh();
         },
         function errorCallback(response){
           $log.error(response);
-          alert(response.data.message);
+          toastr.error(response.data.message,'Failed');
         });
+      }
+      
+    }
+
+    function validateForm(){
+      $log.info('validate form');
+      if(vm.transactionMethod.id == null){
+        $log.info('enter');
+        toastr.error('Please choose transaction method!','Failed');
+        return false;
+      }else if(vm.payment < vm.grandTotal && vm.transactionMethod.methodName != 'DEBT'){
+        $log.info('enter');
+        toastr.error('Payment must be greater than total!','Failed');
+        return false;
+      }else if(vm.transactionMethod.methodName == 'DEBT' && vm.customerId == null){
+        $log.info('enter');
+        toastr.error('Customer is required!','Failed');
+        return false;
+      }else{
+        return true;
       }
     }
 

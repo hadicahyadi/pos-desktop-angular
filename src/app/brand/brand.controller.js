@@ -3,11 +3,11 @@
 
   angular
     .module('posapp')
-    .controller('BrandController',  ['$state','$http','$log','BASE_URL','$scope','brandService', BrandController]);
+    .controller('BrandController',  ['$state','$http','$log','BASE_URL','$scope','brandService','toastr', BrandController]);
 
   
   /** @ngInject */
-  function BrandController($state,$http,$log,BASE_URL,$scope,brandService) {
+  function BrandController($state,$http,$log,BASE_URL,$scope,brandService,toastr) {
 
   	var vm = this;
 
@@ -22,7 +22,7 @@
 	vm.remove = remove;
 	vm.dataCount = 0;
 	vm.currentPage = 1;
-  	vm.pageSize = 5;
+  	vm.pageSize = 8;
 	
 	load();
 
@@ -47,11 +47,12 @@
 			$state.go("main.brand");
 			vm.brand = null;
 			vm.currentPage = 1;
+			toastr.success(response.data.message,'');
 			load();
 		},
 		function errorCallback(response){
 			$log.error(response);
-			alert('save data error!');
+			toastr.error(response.data.message,'Failed');
 		});
 	}
 
@@ -62,7 +63,7 @@
 		},
 		function errorCallback(response){
 			$log.error(response);
-			alert('delete data error!');
+			toastr.error(response.data.message,'Failed');
 		});
 	}
 

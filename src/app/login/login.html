@@ -5,15 +5,19 @@
 				<img src="./assets/images/logo.png" />
 			</div>
 			<div class="mdl-card__supporting-text">
-				<form ng-submit="vm.login()">
+				<form ng-submit="vm.login()" name="form">
 					<div class="mdl-textfield mdl-js-textfield">
-						<input ng-model="vm.username" class="mdl-textfield__input" type="text" id="username" />
+						<input ng-model="vm.username" name="username" required class="mdl-textfield__input" type="text" id="username" />
 						<label class="mdl-textfield__label" for="username">Username</label>
+						
 					</div>
+					<span ng-show="form.username.$touched && form.username.$error.required" style="color:red">username is required</span>
 					<div class="mdl-textfield mdl-js-textfield">
-						<input ng-model="vm.password" class="mdl-textfield__input" type="password" id="userpass" />
+						<input ng-model="vm.password" name="password" required class="mdl-textfield__input" type="password" id="userpass" />
 						<label class="mdl-textfield__label" for="userpass">Password</label>
+						
 					</div>
+					<span ng-show="form.password.$touched && form.password.$error.required" style="color:red">password is required</span>
 					<center>
 						<strong><span ng-show="vm.isError" style="color:red;font-size:12px">{{vm.error}}</span></strong>
 						<!-- MDL Progress Bar with Indeterminate Progress -->
@@ -21,7 +25,7 @@
 					</center>
 					<br/>
 					<!-- Accent-colored raised button with ripple -->
-					<button style="width:100%" type="submit" ng-click="vm.barShow = true" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+					<button style="width:100%" type="submit" ng-click="vm.barShow = true && form.$valid" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
 						Login
 					</button>
 				</form>

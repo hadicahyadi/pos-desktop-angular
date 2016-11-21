@@ -3,11 +3,11 @@
 
   angular
     .module('posapp')
-    .controller('ChangePasswordController',  ['$state','$http','$log','BASE_URL','$scope','$cookies','md5', ChangePasswordController]);
+    .controller('ChangePasswordController',  ['$state','$http','$log','BASE_URL','$scope','$cookies','md5','toastr', ChangePasswordController]);
 
   
   /** @ngInject */
-  function ChangePasswordController($state,$http,$log,BASE_URL,$scope,$cookies,md5) {
+  function ChangePasswordController($state,$http,$log,BASE_URL,$scope,$cookies,md5,toastr) {
 
   	var vm = this;
 
@@ -25,7 +25,7 @@
 			$http.post(BASE_URL+'/user/changePassword',vm.user).then(function successCallback(response){
 				vm.oldPassword = null;
 				vm.newPassword = null;
-				alert('Change Password Success');
+				toastr.success(response.data.message,'');
 			},
 			function errorCallback(response){
 				alert('Change Password Failed');

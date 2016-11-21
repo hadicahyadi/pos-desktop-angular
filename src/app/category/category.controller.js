@@ -3,13 +3,13 @@
 
   angular
     .module('posapp')
-    .controller('CategoryController',  ['$state','$http','$log','BASE_URL','$scope','categoryService', CategoryController]);
+    .controller('CategoryController',  ['$state','$http','$log','BASE_URL','$scope','categoryService','toastr', CategoryController]);
 
 
 	
 
   /** @ngInject */
-  function CategoryController($state,$http,$log,BASE_URL,$scope,categoryService) {
+  function CategoryController($state,$http,$log,BASE_URL,$scope,categoryService,toastr) {
   	var vm = this;
 
     $scope.$parent.pageTitle= "Category";
@@ -49,11 +49,12 @@
 			$state.go("main.category");
 			vm.category = null;
 			vm.currentPage = 1;
+			toastr.success(response.data.message,'');
 			load();
 		},
 		function errorCallback(response){
 			$log.error(response);
-			alert('save data error!');
+			toastr.error(response.data.message,'Failed');
 		});
 	}
 
@@ -64,7 +65,7 @@
 		},
 		function errorCallback(response){
 			$log.error(response);
-			alert('delete data error!');
+			toastr.error(response.data.message,'Failed');
 		});
 	}
 

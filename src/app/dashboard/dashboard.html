@@ -2,22 +2,22 @@
 <div class="mdl-grid" style="padding:0px">
   <div class="mdl-cell mdl-cell--6-col">
     <h5>Sales Per Day</h5>
-    <canvas id="lineDaily" chart-colors="colours" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-click="onClick" ></canvas> 
+    <strong class="mdl-color-text--pink-400" ng-hide="dataDaily.length > 0">No Data Found</strong>
+    <canvas id="lineDaily" chart-colors="colours" class="chart chart-line" chart-data="dataDaily" chart-labels="labels" chart-series="series" chart-click="onClick" ></canvas> 
+   
   </div>
+
 
   <div class="mdl-cell mdl-cell--6-col">
   	<h5>Sales Per Month</h5>
+    <strong class="mdl-color-text--pink-400" ng-hide="dataMonthly.length > 0">No Data Found</strong>
   	<canvas id="lineMonthly" class="chart chart-line" chart-data="dataMonthly" chart-labels="labelsMonthly" chart-series="seriesMonthly" chart-click="onClick" ></canvas> 
   </div>
-  <!-- <div class="mdl-cell mdl-cell--6-col">
-    <h5>Sales Per Day</h5>
-    <canvas id="line2" class="chart chart-line" chart-data="data" chart-labels="labels" 
-    chart-legend="true" chart-series="series" chart-click="onClick" ></canvas> 
-  </div> -->
 </div>
-<div class="mdl-grid" style="padding:0px;margin-top:20px">
-  <div class="mdl-cell mdl-cell--4-col">
 
+<div class="mdl-grid" style="padding:0px;margin-top:20px" ng-show="user.roleId == 1">
+
+  <div class="mdl-cell mdl-cell--4-col" ng-init="load">
     <div class="mdl-card mdl-shadow--4dp">
       <div class="mdl-card__title mdl-color--primary">
         <h2 class="mdl-card__title-text mdl-color-text--white">Purchase Order Debt</h2>
@@ -30,6 +30,26 @@
       </div>
       <div class="mdl-card__actions mdl-card--border mdl-color-text--white">
         <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary" ui-sref="main.purchasehistory">
+          View All
+           <i class="material-icons" style="margin-left:10px">keyboard_arrow_right</i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mdl-cell mdl-cell--4-col">
+    <div class="mdl-card mdl-shadow--4dp">
+      <div class="mdl-card__title mdl-color--primary">
+        <h2 class="mdl-card__title-text mdl-color-text--white">Sales Order Credit</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <h6 ng-if="purchaseDebt.length > 0 == false">You have no credit</h6>
+        <span ng-repeat="salesOrder in salesOrderCredit">
+          <h6 ng-if="purchaseDebt.length > 0 == true"><i class="material-icons mdl-list__item-icon mdl-color-text--pink-400" style="vertical-align:bottom;">error</i> #{{salesOrder.id}} (a/n {{salesOrder.customer.customerName}})</h6>
+        </span>
+      </div>
+      <div class="mdl-card__actions mdl-card--border mdl-color-text--white">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary" ui-sref="main.salesorder">
           View All
            <i class="material-icons" style="margin-left:10px">keyboard_arrow_right</i>
         </a>
