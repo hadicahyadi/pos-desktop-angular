@@ -14,7 +14,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr dir-paginate="brand in vm.brands | itemsPerPage: vm.pageSize" current-page="vm.currentPage" total-items="vm.dataCount">
+    <tr class="ng-animation-disabled" dir-paginate="brand in vm.brands | itemsPerPage: vm.pageSize" current-page="vm.currentPage" total-items="vm.dataCount">
       <td>{{brand.id}}</td>
       <td>{{brand.brandName}}</td>
       <td style="padding-top:8px;padding-right:12px">

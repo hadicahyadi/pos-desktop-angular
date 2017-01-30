@@ -3,11 +3,11 @@
 
   angular
     .module('posapp')
-    .controller('BrandController',  ['$state','$http','$log','BASE_URL','$scope','brandService','toastr', BrandController]);
+    .controller('BrandController',  ['$state','$http','$log','BASE_URL','$scope','brandService','toastr','PAGE_SIZE', BrandController]);
 
   
   /** @ngInject */
-  function BrandController($state,$http,$log,BASE_URL,$scope,brandService,toastr) {
+  function BrandController($state,$http,$log,BASE_URL,$scope,brandService,toastr,PAGE_SIZE) {
 
   	var vm = this;
 
@@ -22,7 +22,7 @@
 	vm.remove = remove;
 	vm.dataCount = 0;
 	vm.currentPage = 1;
-  	vm.pageSize = 8;
+  	vm.pageSize = PAGE_SIZE;
 	
 	load();
 

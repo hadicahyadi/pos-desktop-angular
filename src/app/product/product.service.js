@@ -18,7 +18,18 @@
         }
 
         this.export = function(){
-            return $http.get(BASE_URL+"/product/export");
+            return $http({
+              url: BASE_URL+"/product/export",
+              method: "POST",
+              headers: {
+               'Content-type': 'application/json'
+             },
+             responseType: 'arraybuffer'
+           });
+        }
+
+        this.findProduct = function(value){
+            return $http.get(BASE_URL+"/product/search?searchValue="+value);
         }
 
     }]);

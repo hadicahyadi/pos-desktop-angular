@@ -14,7 +14,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr dir-paginate="category in vm.categories | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
+    <tr class="ng-animation-disabled" dir-paginate="category in vm.categories | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
       <td>{{category.id}}</td>
       <td>{{category.categoryName}}</td>
       <td style="padding-top:8px;padding-right:12px">

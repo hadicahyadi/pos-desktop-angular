@@ -76,7 +76,6 @@
 
    <div class="mdl-cell mdl-cell--4-col">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <!-- <select ng-init="vm.loadCustomer()" id="customer" class="mdl-textfield__input" ng-model="vm.customer" ng-options="customer as customer.customerName for customer in vm.customers"></select> -->
       <select ng-init="vm.loadCustomer()" ng-model = "vm.customerId" class="mdl-textfield__input">
         <option selected>none</option>
         <option ng-repeat="customer in vm.customers" ng-value="customer.id" ng-selected="$first">{{customer.customerName}}</option>

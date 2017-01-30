@@ -67,16 +67,19 @@
     vm.updateProduct = function(value){
       productService.getByProductCode(value).then(function successCallback(response){
         $log.info(response);
-        // vm.products = [];
-        // vm.products = response.data;
-        angular.forEach(response.data,function(item){
-          vm.products = [];
-          vm.products.push(item.productName);
-        })
-
+        vm.products = parseResponse(response.data);
       },function errorCallback(response){
         $log.info(response);
       });
+    }
+
+    function parseResponse(productsResponse){
+      var arrTmp = [];
+      angular.forEach(productsResponse,function(item){
+        arrTmp.push(item.productName);
+      });
+
+      return arrTmp;
     }
 
     vm.selectProduct = function(value){

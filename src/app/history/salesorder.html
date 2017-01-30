@@ -16,10 +16,12 @@
       <th>Discount</th>
       <th>Grand Total</th>
       <th>Customer</th>
+      <th>Status</th>
+      <th>Down Payment</th>
     </tr>
   </thead>
   <tbody>
-    <tr dir-paginate="salesorder in vm.salesorders | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
+    <tr class="ng-animation-disabled" dir-paginate="salesorder in vm.salesorders | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
       <td>{{$index+1}}</td>
       <td>{{salesorder.transactionDate | date : 'dd/MM/yyyy HH:MM'}}</td>
       <td>{{salesorder.user.name}}</td>
@@ -27,7 +29,9 @@
       <td>{{salesorder.total | currency: ''}}</td>
       <td>{{salesorder.discount | currency: ''}}</td>
       <td>{{salesorder.grandTotal | currency: ''}}</td>
-      <td>{{salesorder.customer.customerName}}</td>
+      <td>{{salesorder.customer.id != 0 ? salesorder.customer.customerName : '-'}}</td>
+      <td>{{salesorder.status}}</td>
+      <td>{{salesorder.downPayment | currency: ''}}</td>
     </tr>
   </tbody>
 </table>

@@ -43,9 +43,9 @@
         <h2 class="mdl-card__title-text mdl-color-text--white">Sales Order Credit</h2>
       </div>
       <div class="mdl-card__supporting-text">
-        <h6 ng-if="purchaseDebt.length > 0 == false">You have no credit</h6>
+        <h6 ng-if="salesOrderCredit.length > 0 == false">You have no credit</h6>
         <span ng-repeat="salesOrder in salesOrderCredit">
-          <h6 ng-if="purchaseDebt.length > 0 == true"><i class="material-icons mdl-list__item-icon mdl-color-text--pink-400" style="vertical-align:bottom;">error</i> #{{salesOrder.id}} (a/n {{salesOrder.customer.customerName}})</h6>
+          <h6 ng-if="salesOrderCredit.length > 0 == true"><i class="material-icons mdl-list__item-icon mdl-color-text--pink-400" style="vertical-align:bottom;">error</i> #{{salesOrder.id}} (a/n {{salesOrder.customer.customerName}})</h6>
         </span>
       </div>
       <div class="mdl-card__actions mdl-card--border mdl-color-text--white">

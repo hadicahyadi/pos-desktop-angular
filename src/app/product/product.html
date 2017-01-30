@@ -1,11 +1,28 @@
 
+<div id="search-container" class="mdl-textfield mdl-js-textfield">
+  <input class="mdl-textfield__input" ng-model="vm.searchValue"  type="text" id="searchValue">
+  <label class="mdl-textfield__label" for="searchValue">Product code or product name</label>
+  <button ng-click="vm.search()" style="right:0px;margin-bottom:5px;" class="mdl-button mdl-js-button mdl-button--icon mdl-button--accent">
+    <i class="material-icons">search</i>
+  </button>
+</div>
+<br>
 <!-- Accent-colored raised button with ripple -->
 <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ui-sref="main.product.product-dialog" id="createBtn">
   Create
+</button>&nbsp;&nbsp;&nbsp;
+<button type="button" ng-click="vm.export()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="exportBtn">
+  Export
+</button>&nbsp;&nbsp;&nbsp;
+<button type="button" ng-click="vm.refresh()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+  Refresh
 </button>
-<button style="float:right" type="button" ng-click="vm.download()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="exportBtn">Export</button>
 <br/>
 <br/>
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+  <select id="sortCriteria" class="mdl-textfield__input" ng-options="vm.sortingCriteria.indexOf(criteria) as criteria for criteria in vm.sortingCriteria" ng-model="vm.criteriaSelected" ng-change="vm.sort()"></select>
+  <label class="mdl-textfield__label" for="customer">Sort by</label>
+</div>
 <table class="mdl-data-table mdl-js-data-table">
   <thead>
     <tr>
@@ -24,7 +41,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr dir-paginate="product in vm.products | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
+    <tr class="ng-animation-disabled" dir-paginate="product in vm.products | orderBy: vm.sortBy : vm.reverse | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
       <td>{{product.productCode}}</td>
       <td>{{product.productName}}</td>
       <td>{{product.brand.brandName}}</td>

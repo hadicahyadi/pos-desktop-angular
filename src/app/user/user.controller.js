@@ -3,11 +3,11 @@
 
   angular
     .module('posapp')
-    .controller('UserController',  ['$state','$http','$log','BASE_URL','$scope','userService','toastr', UserController]);
+    .controller('UserController',  ['$state','$http','$log','BASE_URL','$scope','userService','toastr','PAGE_SIZE', UserController]);
 
 
   /** @ngInject */
-  function UserController($state,$http,$log,BASE_URL,$scope,userService,toastr) {
+  function UserController($state,$http,$log,BASE_URL,$scope,userService,toastr,PAGE_SIZE) {
   	var vm = this;
 
     $scope.$parent.pageTitle= "User";
@@ -32,7 +32,7 @@
 	vm.remove = remove;
 	vm.dataCount = 0;
 	vm.currentPage = 1;
-  	vm.pageSize = 5;
+  	vm.pageSize = PAGE_SIZE;
 	
 	load();
 

@@ -18,7 +18,7 @@
         componentHandler.upgradeDom();
         mdlUpgradeDom = false;
       }
-    }, 200);
+    }, 50);
 
     var observer = new MutationObserver(function () {
       mdlUpgradeDom = true;

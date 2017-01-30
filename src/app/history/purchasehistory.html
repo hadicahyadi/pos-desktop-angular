@@ -28,7 +28,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr dir-paginate="purchaseOrder in vm.purchaseOrders | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
+    <tr class="ng-animation-disabled" dir-paginate="purchaseOrder in vm.purchaseOrders | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
       <td>{{$index+1}}</td>
       <td>{{purchaseOrder.transactionDate | date: "dd-MM-yyyy"}}</td>
       <td>{{purchaseOrder.ponumber}}</td>

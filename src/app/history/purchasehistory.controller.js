@@ -3,11 +3,11 @@
 
   angular
     .module('posapp')
-    .controller('PurchaseHistoryController',  ['$state','$http','$log','BASE_URL','$scope','purchaseService','toastr', PurchaseHistoryController]);
+    .controller('PurchaseHistoryController',  ['$state','$http','$log','BASE_URL','$scope','purchaseService','toastr','PAGE_SIZE', PurchaseHistoryController]);
 
 
   /** @ngInject */
-  function PurchaseHistoryController($state,$http,$log,BASE_URL,$scope,purchaseService,toastr) {
+  function PurchaseHistoryController($state,$http,$log,BASE_URL,$scope,purchaseService,toastr,PAGE_SIZE) {
   	var vm = this;
 
     $scope.$parent.pageTitle= "Purchase Order History";
@@ -15,7 +15,7 @@
     vm.purchaseOrders = [];
 	vm.dataCount = 0;
 	vm.currentPage = 1;
-  	vm.pageSize = 5;
+  	vm.pageSize = PAGE_SIZE;
 	vm.searchValue = '';
 	vm.detailId = null;
 	vm.details = [];

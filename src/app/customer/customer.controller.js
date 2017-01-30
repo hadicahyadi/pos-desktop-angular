@@ -3,11 +3,11 @@
 
   angular
     .module('posapp')
-    .controller('CustomerController',  ['$state','$http','$log','BASE_URL','$scope','customerService','toastr', CustomerController]);
+    .controller('CustomerController',  ['$state','$http','$log','BASE_URL','$scope','customerService','toastr','PAGE_SIZE', CustomerController]);
 
   
   /** @ngInject */
-  function CustomerController($state,$http,$log,BASE_URL,$scope,customerService,toastr) {
+  function CustomerController($state,$http,$log,BASE_URL,$scope,customerService,toastr,PAGE_SIZE) {
 
   	var vm = this;
 
@@ -24,7 +24,7 @@
 	vm.remove = remove;
 	vm.dataCount = 0;
 	vm.currentPage = 1;
-  	vm.pageSize = 5;
+  	vm.pageSize = PAGE_SIZE;
 	
 	load();
 

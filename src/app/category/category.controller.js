@@ -3,13 +3,13 @@
 
   angular
     .module('posapp')
-    .controller('CategoryController',  ['$state','$http','$log','BASE_URL','$scope','categoryService','toastr', CategoryController]);
+    .controller('CategoryController',  ['$state','$http','$log','BASE_URL','$scope','categoryService','toastr','PAGE_SIZE', CategoryController]);
 
 
 	
 
   /** @ngInject */
-  function CategoryController($state,$http,$log,BASE_URL,$scope,categoryService,toastr) {
+  function CategoryController($state,$http,$log,BASE_URL,$scope,categoryService,toastr,PAGE_SIZE) {
   	var vm = this;
 
     $scope.$parent.pageTitle= "Category";
@@ -27,11 +27,11 @@
 		}
 	}
 
-    vm.categories = [];
+	vm.categories = [];
 	vm.remove = remove;
 	vm.dataCount = 0;
 	vm.currentPage = 1;
-  	vm.pageSize = 5;
+	vm.pageSize = PAGE_SIZE;
 	
 	load();
 
