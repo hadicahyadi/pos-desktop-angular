@@ -3,11 +3,11 @@
 
   angular
   .module('posapp')
-  .controller('PurchaseController',  ['$state','$http','$log','BASE_URL','$scope','productService','supplierService','purchaseService','toastr', PurchaseController]);
+  .controller('PurchaseController',  ['$state','$http','$log','BASE_URL','$scope','productService','supplierService','purchaseService','toastr','$location', PurchaseController]);
 
 
   /** @ngInject */
-  function PurchaseController($state,$http,$log,BASE_URL,$scope,productService,supplierService,purchaseService,toastr) {
+  function PurchaseController($state,$http,$log,BASE_URL,$scope,productService,supplierService,purchaseService,toastr,$location) {
   	var vm = this;
 
     $scope.$parent.pageTitle= "Purchase Order";
@@ -32,20 +32,28 @@
     vm.POnumber = null;
     vm.products = [];
 
+    vm.toProduct = function(){
+      var url = $state.href('main.product');
+      window.open(url);
+    }
+
 
     vm.updateProduct = function(value){
       productService.getByProductCode(value).then(function successCallback(response){
         $log.info(response);
-        /*vm.products = [];
-        vm.products = response.data;*/
-        angular.forEach(response.data,function(item){
-          vm.products = [];
-          vm.products.push(item.productName);
-        })
-
+        vm.products = parseResponse(response.data);
       },function errorCallback(response){
-        toastr.error(response.data.message,'Failed');
+        $log.info(response);
       });
+    }
+
+    function parseResponse(productsResponse){
+      var arrTmp = [];
+      angular.forEach(productsResponse,function(item){
+        arrTmp.push(item.productName);
+      });
+
+      return arrTmp;
     }
 
 
@@ -100,7 +108,7 @@
       vm.suppliers = [].concat(response.datas);
     });
 
-     vm.save = function(){
+    vm.save = function(){
       if(vm.cart.length > 0){
         var purchaseOrder = {
           supplierId: vm.supplierId,
@@ -149,9 +157,6 @@
     vm.remove = function(index){
       vm.cart.splice(index,1);
     }
-
-   }
-
- }
-
+  }
+}
 })();

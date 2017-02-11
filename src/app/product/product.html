@@ -41,7 +41,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr class="ng-animation-disabled" dir-paginate="product in vm.products | orderBy: vm.sortBy : vm.reverse | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
+    <tr class="ng-animation-disabled" dir-paginate="product in vm.products | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
       <td>{{product.productCode}}</td>
       <td>{{product.productName}}</td>
       <td>{{product.brand.brandName}}</td>

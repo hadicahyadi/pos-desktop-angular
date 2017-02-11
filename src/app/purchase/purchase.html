@@ -1,4 +1,3 @@
-<form ng-submit="vm.addToCart()">
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--4-col">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-focused">
@@ -38,33 +37,16 @@
 
 <h5>Purchase Detail Product</h5>
 <hr style="border-style:dashed"/>
-  <div class="mdl-grid">
-
-    <div class="mdl-cell mdl-cell--4-col">
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <!-- <input class="mdl-textfield__input" ng-model="vm.productCode" type="text" id="productCode">
-        <label class="mdl-textfield__label" for="productCode">Scan or Input Product Code</label> -->
-        <autocomplete attr-placeholder="product name or scan barcode" attr-class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" attr-input-id="valueCode" attr-input-class="mdl-textfield__input" ng-model="vm.product" data="vm.products" on-type="vm.updateProduct"></autocomplete>
-      </div>
-    </div>
-
-<!--     <div class="mdl-cell mdl-cell--4-col">
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" ng-model="vm.price" type="text" id="price">
-        <label class="mdl-textfield__label" for="price">Price</label>
-      </div>
-    </div>
-
-    <div class="mdl-cell mdl-cell--4-col">
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" ng-model="vm.qty" type="text" id="qty">
-        <label class="mdl-textfield__label" for="qty">Qty</label>
-      </div>
-    </div> -->
-
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--4-col">
+    <form ng-submit="vm.addToCart()">
+      <autocomplete attr-placeholder="input or scan barcode" attr-class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" attr-input-id="valueCode" attr-input-class="mdl-textfield__input" ng-model="vm.product" data="vm.products" on-type="vm.updateProduct" ></autocomplete>
+      <br/>
+      <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="addBtn">Add</button>&nbsp;&nbsp;<button ng-click="vm.toProduct()" type="button"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">New Product</button>
+    </form>
   </div>
-  <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="addBtn">Add</button>&nbsp;&nbsp;
-  <a ui-sref="main.product" target="_blank" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="addBtn">New Product</a>
+</div>
+  
 <br/>
 <br/>
 <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width:100%">
@@ -119,4 +101,3 @@
 </div>
 
 <button ng-click="vm.save()" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="saveBtn">Save</button>
-</form>

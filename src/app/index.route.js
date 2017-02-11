@@ -217,6 +217,16 @@
        authenticate: true 
      })
 
+     .state("main.salesorder.detail", {
+        templateUrl: "app/history/salesorder-detail.html",
+        onEnter: ["$state", function($state) {
+          $(document).on("click", ".close", function() {
+            $state.go("main.salesorder");
+          });
+        }],
+
+      })
+
      //--- PURCHASE ORDER HISTORY STATE ---
      .state("main.purchasehistory", {
        url: "/history/purchasehistory",

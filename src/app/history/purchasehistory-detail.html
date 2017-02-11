@@ -1,65 +1,41 @@
 <div class="modal-backdrop"></div>
 <div class="modal-holder" autoscroll="false" id="modalHolder">
 
-	<div class="mdl-card mdl-shadow--4dp" style="margin: 0 auto;display:table" ng-init="vm.loadDetail()">
-      <div class="mdl-card__title mdl-color--primary">
-        <h2 class="mdl-card__title-text mdl-color-text--white">Detail Purchase #{{vm.purchaseOrder.ponumber}}</h2>
-      </div>
-      
-      <div class="mdl-card__supporting-text" style="width:100%">
-      	<strong>Supplier : {{vm.purchaseOrder.supplier.supplierName}}</strong>
-        <table class="mdl-data-table mdl-js-data-table" style="margin-top:20px">
-			<thead>
-				<tr>
-					<th>Product Code</th>
-					<th>Product Name</th>
-					<th>Brand</th>
-					<th>Price</th>
-					<th>Qty</th>
-					<th>Subtotal</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="detail in vm.details">
-					<td>{{detail.product.productCode}}</td>
-					<td>{{detail.product.productName}}</td>
-					<td>{{detail.product.brand.brandName}}</td>
-					<td>{{detail.price | currency:''}}</td>
-					<td>{{detail.qty}}</td>
-					<td>{{detail.price * detail.qty | currency:''}}</td>
-				</tr>
-			</tbody>
-		</table>
-      </div>
-      <div class="mdl-card__menu">
-      	<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect close">
-      		<i class="material-icons" style="color:#fff">close</i>
-      	</button>
-      </div>
-    </div>
 
-	<!-- <div class="modal-box" ng-init="vm.loadDetail()">
-		<h5>Detail Purchase</h5>
-		<table class="mdl-data-table mdl-js-data-table" ng-init="vm.load()">
-			<thead>
-				<tr>
-					<th>Product Code</th>
-					<th>Product Name</th>
-					<th>Brand</th>
-					<th>Price</th>
-					<th>Qty</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="detail in vm.details">
-					<td>{{detail.product.productCode}}</td>
-					<td>{{detail.product.productName}}</td>
-					<td>{{detail.product.brand.brandName}}</td>
-					<td>{{detail.price | currency:''}}</td>
-					<td>{{detail.qty}}</td>
-				</tr>
-			</tbody>
-		</table>
-		<button type="button" class="mdl-button mdl-js-button mdl-button--accent close">Close</button>
-	</div> -->
+	<div class="mdl-card mdl-shadow--4dp" style="margin: 0 auto;display:table;" ng-init="vm.loadDetail()">
+		<div class="mdl-card__title mdl-color--primary">
+			<h2 class="mdl-card__title-text mdl-color-text--white">Detail Purchase #{{vm.purchaseOrder.ponumber}}</h2>
+		</div>
+
+		<div class="mdl-card__supporting-text" style="width:100%;overflow-y:scroll;max-height:400px">
+			<strong>Supplier : {{vm.purchaseOrder.supplier.supplierName}}</strong>
+			<table class="mdl-data-table mdl-js-data-table" style="margin-top:20px">
+				<thead>
+					<tr>
+						<th>Product Code</th>
+						<th>Product Name</th>
+						<th>Brand</th>
+						<th>Price</th>
+						<th>Qty</th>
+						<th>Subtotal</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="ng-animation-disabled" ng-repeat="detail in vm.details">
+						<td>{{detail.product.productCode}}</td>
+						<td>{{detail.product.productName}}</td>
+						<td>{{detail.product.brand.brandName}}</td>
+						<td>{{detail.price | currency:''}}</td>
+						<td>{{detail.qty}}</td>
+						<td>{{detail.price * detail.qty | currency:''}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="mdl-card__menu">
+			<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect close">
+				<i class="material-icons" style="color:#fff">close</i>
+			</button>
+		</div>
+	</div>
 </div>

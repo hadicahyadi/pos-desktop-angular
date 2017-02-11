@@ -17,6 +17,14 @@
     		return $http.post(BASE_URL+"/salesorder?id="+id);
     	}
 
+        this.getDetail = function(id){
+            return $http.get(BASE_URL+"/salesorder/detail?id="+id);
+        }
+
+        this.reprint = function(id){
+            return $http.post(BASE_URL+"/salesorder/print?id="+id);
+        }
+
     }]);
 
 })();

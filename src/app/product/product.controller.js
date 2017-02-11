@@ -1,125 +1,118 @@
 (function() {
-  'use strict';
+	'use strict';
 
-  angular
-    .module('posapp')
-    .controller('ProductController',  ['$state','$http','$log','BASE_URL','$scope','productService','brandService','categoryService','$filter',
-    'toastr','PAGE_SIZE', ProductController]);
+	angular
+	.module('posapp')
+	.controller('ProductController',  ['$state','$http','$log','BASE_URL','$scope','productService','brandService','categoryService','$filter',
+		'toastr','PAGE_SIZE', ProductController]);
 
-  /** @ngInject */
-  function ProductController($state,$http,$log,BASE_URL,$scope,productService,brandService,categoryService,$filter,toastr,PAGE_SIZE) {
-  	var vm = this;
+	/** @ngInject */
+	function ProductController($state,$http,$log,BASE_URL,$scope,productService,brandService,categoryService,$filter,toastr,PAGE_SIZE) {
+		var vm = this;
 
-    $scope.$parent.pageTitle= "Product";
+		$scope.$parent.pageTitle= "Product";
 
-    vm.isEditPage = false;
-    vm.sortBy = 'productName';
-    vm.reverse = true;
-    vm.sortingCriteria = ["Product Name(A-Z)","Product Name(Z-A)","Brand(A-Z)","Brand(Z-A)","Category(A-Z)","Category(Z-A)"];
-    vm.criteriaSelected = 1;
-    vm.brands = [];
-    vm.categories = [];
-    vm.product = {
-    	id: null,
-    	brandId: null,
-    	categoryId: null,
-    	productCode: null,
-    	productName: null,
-    	pcsPrice: null,
-    	lotPrice: null,
-    	minLot: null,
-    	minStock: null,
-    	stock: null,
-    	description: null
-    };
+		vm.isEditPage = false;
+		vm.sortBy = 'product_name';
+		vm.sortValue = 'desc';
+		vm.reverse = true;
+		vm.sortingCriteria = ["Product Name(A-Z)","Product Name(Z-A)","Brand(A-Z)","Brand(Z-A)","Category(A-Z)","Category(Z-A)"];
+		vm.criteriaSelected = 1;
+		vm.brands = [];
+		vm.categories = [];
+		vm.product = {
+			id: null,
+			brandId: null,
+			categoryId: null,
+			productCode: null,
+			productName: null,
+			pcsPrice: null,
+			lotPrice: null,
+			minLot: null,
+			minStock: null,
+			stock: null,
+			description: null
+		};
 
-    vm.products = [];
-    vm.exportData = [];
-    vm.dataCount = 0;
-    vm.currentPage = 1;
-    vm.pageSize = PAGE_SIZE;
-    vm.isDisabled = true;
-    vm.searchValue = null;
+		vm.products = [];
+		vm.exportData = [];
+		vm.dataCount = 0;
+		vm.currentPage = 1;
+		vm.pageSize = PAGE_SIZE;
+		vm.isDisabled = true;
+		vm.searchValue = "";
 
-    load();
-    loadBrand();
-    loadCategory();
-    
-    function loadBrand(){
-		brandService.getAll(99,1).success(function(response){
-			$log.info(response);
-			vm.brands = [].concat(response.datas);
-			
-		});
-	}
-
-	function loadCategory(){
-		categoryService.getAll(99,1).success(function(response){
-			$log.info(response);
-			vm.categories = [].concat(response.datas);
-		});
-	}
-
-
-	function load(){
-		productService.getAll(vm.pageSize,vm.currentPage).success(function(response){
-			vm.sortBy = 'productName';
-			vm.reverse = true;
-			vm.products = [].concat(response.datas);
-			vm.dataCount = response.pageCount;
-		});
-	}
-
-	vm.refresh = function(){
 		load();
-		vm.searchValue = null;
-	}
+		loadBrand();
+		loadCategory();
 
-	vm.save = function() {
-		productService.save(vm.product).then(function successCallback(response){
-			$log.info(response.data);
-			if(response.data.responseCode == '-1'){
-				toastr.error(response.data.message,'');
-			}else{
-				$state.go("main.product");
-				vm.product = null;
-				vm.currentPage = 1;
-				toastr.success(response.data.message,'');
-			}
-			load();
-		},
-		function errorCallback(response){
-			$log.error(response);
-			toastr.error(response.data.message,'Failed');
-		});
-	}
+		function loadBrand(){
+			brandService.getAll(999,1).success(function(response){
+				$log.info(response);
+				vm.brands = [].concat(response.datas);
 
-	vm.edit = function edit(product){
-		vm.isEditPage = true;  
-		vm.product = product;
-		vm.isDisabled = false;
-	}
-
-	vm.isEdit = function isEdit(){
-		if(vm.isEditPage == false){
-			return "mdl-textfield mdl-js-textfield mdl-textfield--floating-label";
-		}else{
-			return "mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-focused";
+			});
 		}
-	}
+
+		function loadCategory(){
+			categoryService.getAll(999,1).success(function(response){
+				$log.info(response);
+				vm.categories = [].concat(response.datas);
+			});
+		}
 
 
-	vm.search = function(){
-		productService.findProduct(vm.searchValue).then(function successCallback(response){
-			$log.info(response);
-			vm.dataCount = response.data.length;
-			vm.currentPage = 1;
-			vm.products = [].concat(response.data);
-		},
-		function errorCallback(response){
-			toastr.error(response.data.message,'Failed');
-		});
-	}
+		function load(){
+			productService.getAll(vm.pageSize,vm.currentPage,vm.sortBy,vm.sortValue,vm.searchValue).success(function(response){
+				$log.info(response);
+				vm.products = [].concat(response.datas);
+				vm.dataCount = response.pageCount;
+			});
+		}
+
+		vm.refresh = function(){
+			vm.searchValue = "";
+			vm.sortBy = 'product_name';
+			vm.sortValue = 'desc';
+			load();
+		}
+
+		vm.search = function(){
+			load();
+		}
+
+		vm.save = function() {
+			productService.save(vm.product).then(function successCallback(response){
+				$log.info(response.data);
+				if(response.data.responseCode == '-1'){
+					toastr.error(response.data.message,'');
+				}else{
+					$state.go("main.product");
+					vm.product = null;
+					vm.currentPage = 1;
+					toastr.success(response.data.message,'');
+				}
+				load();
+			},
+			function errorCallback(response){
+				$log.error(response);
+				toastr.error(response.data.message,'Failed');
+			});
+		}
+
+		vm.edit = function edit(product){
+			vm.isEditPage = true;  
+			vm.product = product;
+			vm.isDisabled = false;
+		}
+
+		vm.isEdit = function isEdit(){
+			if(vm.isEditPage == false){
+				return "mdl-textfield mdl-js-textfield mdl-textfield--floating-label";
+			}else{
+				return "mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-focused";
+			}
+		}
 
 	// Download excel function
 	vm.export = function(){
@@ -141,24 +134,33 @@
 
 	vm.sort = function(){
 		if(vm.criteriaSelected == 0){ // product name asc
-			vm.sortBy = 'productName';
+			vm.sortBy = 'product_name';
 			vm.reverse = false;
+			vm.sortValue = 'asc';
 		}else if(vm.criteriaSelected == 1){ // product name desc
-			vm.sortBy = 'productName';
+			vm.sortBy = 'product_name';
 			vm.reverse = true;
+			vm.sortValue = 'desc';
 		}else if(vm.criteriaSelected == 2){ // brand name asc
-			vm.sortBy = 'brand.brandName';
+			vm.sortBy = 'b.brand_name';
 			vm.reverse = false;
+			vm.sortValue = 'asc';
 		}else if(vm.criteriaSelected == 3){ // brand name desc
-			vm.sortBy = 'brand.brandName';
+			vm.sortBy = 'b.brand_name';
 			vm.reverse = true;
+			vm.sortValue = 'desc';
 		}else if(vm.criteriaSelected == 4){ // category name asc
-			vm.sortBy = 'category.categoryName';
+			vm.sortBy = 'c.category_name';
 			vm.reverse = false;
+			vm.sortValue = 'asc';
 		}else if(vm.criteriaSelected == 5){ // category name desc
-			vm.sortBy = 'category.categoryName';
+			vm.sortBy = 'c.category_name';
 			vm.reverse = true;
+			vm.sortValue = 'desc';
 		}
+		// vm.pageSize = 9999;
+		// vm.currentPage = 1;
+		load();
 	}
 
 	//--- ALL EXPORT to PDF FUNCTION GOES BELOW (UNUSED)---
@@ -190,26 +192,26 @@
 				// $log.info(JSON.parse(JSON.stringify(row)));
 				switch(index){
 					case 0:
-						dataRow.push({text:arr[4]+''+'',margin:[5,5,0,0],fontSize:10});
-						break;
+					dataRow.push({text:arr[4]+''+'',margin:[5,5,0,0],fontSize:10});
+					break;
 					case 1:
-						dataRow.push({text:arr[5]+''+'',margin:[5,5,0,0],fontSize:10});
-						break;
+					dataRow.push({text:arr[5]+''+'',margin:[5,5,0,0],fontSize:10});
+					break;
 					case 2:
-						dataRow.push({text:arr[14].brandName+'',margin:[5,5,0,0],fontSize:10});
-						break;
+					dataRow.push({text:arr[14].brandName+'',margin:[5,5,0,0],fontSize:10});
+					break;
 					case 3:
-						dataRow.push({text:arr[9]+''+'',margin:[5,5,0,0],fontSize:10});
-						break;
+					dataRow.push({text:arr[9]+''+'',margin:[5,5,0,0],fontSize:10});
+					break;
 					case 4:
-						dataRow.push({text:arr[10]+''+'',margin:[5,5,0,0],fontSize:10});
-						break;
+					dataRow.push({text:arr[10]+''+'',margin:[5,5,0,0],fontSize:10});
+					break;
 					case 5:
-						dataRow.push({text:currencyFormat(arr[7])+''+'',margin:[5,5,0,0],fontSize:10});
-						break;
+					dataRow.push({text:currencyFormat(arr[7])+''+'',margin:[5,5,0,0],fontSize:10});
+					break;
 					case 6:
-						dataRow.push({text:currencyFormat(arr[8])+''+'',margin:[5,5,0,0],fontSize:10});
-						break;
+					dataRow.push({text:currencyFormat(arr[8])+''+'',margin:[5,5,0,0],fontSize:10});
+					break;
 					// case 7:
 					// 	dataRow.push({text:currencyFormat(arr[8])+''+'',margin:[5,5,0,0]});
 					// 	break;
@@ -251,7 +253,7 @@
 				pageSize: 'A5',
 				
 			},
-				buildTable(['Product Code','Product Name','Brand','Min Stock','Stock','Pcs Price','Lot Price'])
+			buildTable(['Product Code','Product Name','Brand','Min Stock','Stock','Pcs Price','Lot Price'])
 			]
 		};
 
@@ -276,6 +278,6 @@
 
 	
 
-  }
+}
 
 })();

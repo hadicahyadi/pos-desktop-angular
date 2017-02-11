@@ -34,7 +34,6 @@
 		loadSalesOrderCredit();
 
 		function loadChart(){
-			$log.info(dataSales.data.daily.length);
 			angular.forEach(dataSales.data.daily,function(item){
 				$scope.labels.push(item.transactionDate);
 				$scope.dataTrx.push(item.transactionSum);

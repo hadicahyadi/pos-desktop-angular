@@ -2,7 +2,7 @@
 <div class="mdl-grid" style="padding:0px">
   <div class="mdl-cell mdl-cell--6-col">
     <h5>Sales Per Day</h5>
-    <strong class="mdl-color-text--pink-400" ng-hide="dataDaily.length > 0">No Data Found</strong>
+    <strong class="mdl-color-text--pink-400" ng-show="dataDaily.length <= 0">No Data Found</strong>
     <canvas id="lineDaily" chart-colors="colours" class="chart chart-line" chart-data="dataDaily" chart-labels="labels" chart-series="series" chart-click="onClick" ></canvas> 
    
   </div>
@@ -10,7 +10,7 @@
 
   <div class="mdl-cell mdl-cell--6-col">
   	<h5>Sales Per Month</h5>
-    <strong class="mdl-color-text--pink-400" ng-hide="dataMonthly.length > 0">No Data Found</strong>
+    <strong class="mdl-color-text--pink-400" ng-show="dataMonthly.length <= 0">No Data Found</strong>
   	<canvas id="lineMonthly" class="chart chart-line" chart-data="dataMonthly" chart-labels="labelsMonthly" chart-series="seriesMonthly" chart-click="onClick" ></canvas> 
   </div>
 </div>

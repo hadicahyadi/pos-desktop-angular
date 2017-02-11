@@ -5,8 +5,9 @@
     .module('posapp')
     .service('productService',['$http','BASE_URL',function ($http,BASE_URL){
 
-    	this.getAll = function (itemsPerPage,pageNumber){
-    		 return $http.get(BASE_URL+"/product?itemsPerPage="+itemsPerPage+"&pageNumber="+pageNumber);
+    	this.getAll = function (itemsPerPage,pageNumber,sortBy,sortValue,criteria){
+    		 return $http.get(BASE_URL+"/product?itemsPerPage="+itemsPerPage+"&pageNumber="+pageNumber+"&orderBy="+sortBy+"&orderValue="+sortValue
+          +"&criteria="+criteria);
     	}
 
     	this.save = function(product){

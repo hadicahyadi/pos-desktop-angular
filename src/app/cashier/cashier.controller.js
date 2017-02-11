@@ -4,11 +4,11 @@
   angular
     .module('posapp')
     .controller('CashierController',  ['$state','$http','$log','BASE_URL','$scope','$cookies','productService','salesOrderService'
-      ,'transactionMethodService','customerService','toastr', CashierController]);
+      ,'transactionMethodService','customerService','toastr','$filter', CashierController]);
 
   
   /** @ngInject */
-  function CashierController($state,$http,$log,BASE_URL,$scope,$cookies,productService,salesOrderService,transactionMethodService,customerService,toastr) {
+  function CashierController($state,$http,$log,BASE_URL,$scope,$cookies,productService,salesOrderService,transactionMethodService,customerService,toastr,$filter) {
 
   	var vm = this;
   	$scope.$parent.pageTitle = "Cashier";
@@ -63,6 +63,7 @@
     vm.discount = null;
     vm.grandTotal = 0;
     vm.paymentLabel = "Payment";
+    vm.productsTmp = [];
    
     vm.updateProduct = function(value){
       productService.getByProductCode(value).then(function successCallback(response){
@@ -75,8 +76,10 @@
 
     function parseResponse(productsResponse){
       var arrTmp = [];
+      vm.productsTmp = [];
       angular.forEach(productsResponse,function(item){
         arrTmp.push(item.productName);
+        vm.productsTmp.push(item);
       });
 
       return arrTmp;
@@ -106,7 +109,7 @@
       if(item.qty >= item.product.minLot){
         $log.info(item.product.minLot);
         item.sellPrice = item.product.lotPrice;
-      }else if(item.qty < vm.minLot){
+      }else if(item.qty < item.product.minLot){
         item.sellPrice = item.product.pcsPrice;
       }
     }
@@ -132,8 +135,11 @@
     vm.isFocused = "mdl-textfield mdl-js-textfield mdl-textfield--floating-label";
 
   	vm.addToCart = function(){
+      $log.info("product selected : "+vm.productName);
+      var pp = $filter('collectionLookup')('productName',vm.productName,vm.productsTmp);
+      $log.info("collection result = "+pp.productCode);
       var flag = true;
-  		productService.getByProductCode(vm.productName).then(function successCallback(response){
+  		productService.getByProductCode(pp.productCode).then(function successCallback(response){
         $log.info(response);
         if(response.data == null){
           alert("Product not found");
@@ -178,6 +184,11 @@
 
     vm.remove = function(index){
       vm.cart.splice(index,1);
+      if(vm.cart.length == 0){
+        vm.grandTotal = 0;
+        vm.discount = null;
+        vm.payment = null;
+      }
     }
 
 
@@ -193,7 +204,13 @@
 
     vm.save = function(){
 
-      $log.info('customer id='+vm.customerId);
+      if(vm.customerId == 'none'){
+        vm.customerId = null;
+      }
+
+      if(vm.discount == ''){
+        vm.discount = null;
+      }
 
       var salesOrder = {
         userId: angular.fromJson($cookies.get('user')).id,
@@ -224,6 +241,7 @@
 
         if(vm.transactionMethod.methodName != 'DEBT'){
           vm.change = vm.payment - vm.grandTotal;
+          salesOrder.change = vm.change;
         }
         
         salesOrderService.save(salesOrder).then(function successCallback(response){
@@ -233,6 +251,7 @@
         },
         function errorCallback(response){
           $log.error(response);
+          vm.change = 0;
           toastr.error(response.data.message,'Failed');
         });
       }
@@ -241,7 +260,10 @@
 
     function validateForm(){
       $log.info('validate form');
-      if(vm.transactionMethod.id == null){
+      if(vm.cart.length == 0){
+        toastr.error('Your cart is empty!','Failed');
+        return false;
+      }else if(vm.transactionMethod.id == null){
         $log.info('enter');
         toastr.error('Please choose transaction method!','Failed');
         return false;
@@ -265,6 +287,7 @@
       vm.payment = null;
       vm.productName = null;
       vm.products = [];
+      vm.grandTotal = 0;
     }
 
     function updateSubtotal(index,price){

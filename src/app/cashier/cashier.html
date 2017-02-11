@@ -6,7 +6,7 @@
     <br/>
     <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="addBtn">Add</button>
   </form>
-</div>
+ </div>
 </div>
 
 <br/>
@@ -30,7 +30,7 @@
       <td>{{cartItem.product.brand.brandName}}</td>
       <td>{{cartItem.sellPrice | currency: ""}}</td>
       <!-- <td>{{cartItem.product.lotPrice | currency: ""}}</td> -->
-      <td><input onkeypress="onKeyPress(event);" min="0" type="number" ng-model="cartItem.qty" ng-change="vm.changeQty(cartItem,$index)" class="mdl-textfield__input"></td>
+      <td><input min="0" type="number" ng-model="cartItem.qty" ng-change="vm.changeQty(cartItem,$index)" class="mdl-textfield__input"></td>
       <td><span ng-bind="cartItem.subtotal = cartItem.sellPrice * cartItem.qty;cartItem.subtotal | currency:''"></span></td>
       <td style="padding-top:8px"><button id="deleteBtn" ng-click="vm.remove($index)" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px">clear</i></button></td>
     </tr>
@@ -77,7 +77,7 @@
    <div class="mdl-cell mdl-cell--4-col">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <select ng-init="vm.loadCustomer()" ng-model = "vm.customerId" class="mdl-textfield__input">
-        <option selected>none</option>
+        <option selected ng-value="null">none</option>
         <option ng-repeat="customer in vm.customers" ng-value="customer.id" ng-selected="$first">{{customer.customerName}}</option>
       </select>
       <label class="mdl-textfield__label" for="customer">Customer(optional)</label>
@@ -92,12 +92,5 @@
 
 <button ng-click="vm.save()" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="doneBtn">Done</button>&nbsp;<button style="margin-left:20px" ng-click="vm.change = 0" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Refresh</button>
 
-<script type="text/javascript">
-// function onKeyPress(args)
-// {
-//   if(args.keyCode === 13)
-//     document.getElementById("valueCode").focus();
-// }  
-</script>
 
 
