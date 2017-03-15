@@ -258,40 +258,18 @@ ul{
     width: 100%;
 }
 /* END EXTRAS*/
-
-.acme-card-wide.mdl-card {
-  width: 100%;
-}
-.acme-card-wide > .mdl-card__title {
-  color: #fff;
-  height: 176px;
-  background: url('../assets/images/yeoman.png') center / cover;
-  background-size: 110px;
-  background-repeat: no-repeat;
-}
-.acme-card-wide > .mdl-card__title > .mdl-card__title-text {
-  color: #000;
-}
-.acme-card-wide > .mdl-card__menu {
-  color: #000;
-}
-.acme-card-wide > .mdl-card__actions {
-  text-align: center;
+.bg-login{
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../assets/images/login-bg.png');
 }
 
-.acme-card-square.mdl-card {
-  width: 100%;
-  min-height: 200px;
-}
-.acme-card-square > .mdl-card__title {
-  color: #fff;
-  background: #283593;
-}
-.acme-card-square > .mdl-card__media {
-  color: #fff;
-  background: none;
-  text-align: center;
-}
-.acme-card-square > .mdl-card__media > img {
-  height: 100px;
+.app-title{
+  color: #3F51B5;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  margin-left: 25px;
+  font-weight: bold;
 }

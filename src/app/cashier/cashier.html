@@ -1,5 +1,10 @@
 <div class="mdl-grid" style="padding:0px">
  <div class="mdl-cell mdl-cell--6-col">
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-focused">
+    <select id="pricingName" class="mdl-textfield__input" ng-model="vm.priceParam" ng-options="priceParam.id as priceParam.paramName for priceParam in vm.priceParams">
+    </select>
+    <label class="mdl-textfield__label" for="pricingName">Price Identifier</label>
+  </div><br>
   <form ng-submit="vm.addToCart()">
     <autocomplete attr-placeholder="input or scan barcode" attr-class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" attr-input-id="valueCode" attr-input-class="mdl-textfield__input" ng-model="vm.productName" data="vm.products" on-type="vm.updateProduct" ></autocomplete>
     <!-- <label class="mdl-textfield__label" for="valueCode">Scan or Input Product Code</label> -->
@@ -17,8 +22,8 @@
       <th>Product Name</th>
       <th>Brand</th>
       <th>Price</th>
-     <!--  <th>Lot Price</th> -->
       <th>Qty</th>
+      <!-- <th>Discount</th> -->
       <th>Subtotal</th>
       <th>Action</th>
     </tr>
@@ -28,10 +33,10 @@
       <td>{{cartItem.product.productCode}}</td>
       <td>{{cartItem.product.productName}}</td>
       <td>{{cartItem.product.brand.brandName}}</td>
-      <td>{{cartItem.sellPrice | currency: ""}}</td>
-      <!-- <td>{{cartItem.product.lotPrice | currency: ""}}</td> -->
+      <td>{{cartItem.price | currency: ""}}</td>
       <td><input min="0" type="number" ng-model="cartItem.qty" ng-change="vm.changeQty(cartItem,$index)" class="mdl-textfield__input"></td>
-      <td><span ng-bind="cartItem.subtotal = cartItem.sellPrice * cartItem.qty;cartItem.subtotal | currency:''"></span></td>
+      <!-- <td><input type="text" class="mdl-textfield__input" ng-bind=""></td> -->
+      <td><span ng-bind="cartItem.subtotal = cartItem.price * cartItem.qty;cartItem.subtotal | currency:''"></span></td>
       <td style="padding-top:8px"><button id="deleteBtn" ng-click="vm.remove($index)" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px">clear</i></button></td>
     </tr>
     <tr>
@@ -41,6 +46,7 @@
       <td></td>
       <td></td>
       <td></td>
+      <!-- <td></td> -->
       <td><h5 ng-model="vm.total">{{vm.getTotal() | currency:""}}</h5></td>
     </tr>
   </tbody>

@@ -3,11 +3,11 @@
 
 	angular
 	.module('posapp')
-	.controller('ProductController',  ['$state','$http','$log','BASE_URL','$scope','productService','brandService','categoryService','$filter',
+	.controller('ProductController',  ['$state','$http','$log','BASE_URL','$scope','productService','brandService','categoryService','priceparamService','$filter',
 		'toastr','PAGE_SIZE', ProductController]);
 
 	/** @ngInject */
-	function ProductController($state,$http,$log,BASE_URL,$scope,productService,brandService,categoryService,$filter,toastr,PAGE_SIZE) {
+	function ProductController($state,$http,$log,BASE_URL,$scope,productService,brandService,categoryService,priceparamService,$filter,toastr,PAGE_SIZE) {
 		var vm = this;
 
 		$scope.$parent.pageTitle= "Product";
@@ -26,21 +26,21 @@
 			categoryId: null,
 			productCode: null,
 			productName: null,
-			pcsPrice: null,
-			lotPrice: null,
-			minLot: null,
+			basePrice: null,
 			minStock: null,
-			stock: null,
-			description: null
+			stock: null
 		};
 
 		vm.products = [];
+		vm.productPrices = [];
 		vm.exportData = [];
 		vm.dataCount = 0;
 		vm.currentPage = 1;
 		vm.pageSize = PAGE_SIZE;
 		vm.isDisabled = true;
 		vm.searchValue = "";
+		vm.priceParams = [];
+    vm.priceParam = null;
 
 		load();
 		loadBrand();
@@ -100,6 +100,19 @@
 			});
 		}
 
+		vm.loadProductPrices = function(){
+			productService.getProductPrices(vm.product.id).success(function (response){
+				vm.productPrices = response;
+			});
+		}
+
+		vm.loadPriceParam = function(){
+      priceparamService.getAll(99,1).success(function(response){
+        vm.priceParams = [].concat(response.datas);
+        vm.priceParam = vm.priceParams[0].id;
+      });
+    };
+
 		vm.edit = function edit(product){
 			vm.isEditPage = true;  
 			vm.product = product;
@@ -116,13 +129,17 @@
 
 	// Download excel function
 	vm.export = function(){
-		productService.export().success(function (data, status, headers, config) {
+		productService.export(vm.priceParam).success(function (data, status, headers, config) {
+			$log.info(headers());
 			var blob = new Blob([data], {
 				type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 			});
-			var date = new Date();
-			vm.filename = 'DATA_PRODUCT_'+date.getFullYear()+('0' + (date.getMonth() + 1)).slice(-2)+('0' + date.getDate()).slice(-2);
-			saveAs(blob, vm.filename + '.xlsx');
+			// var date = new Date();
+			// vm.filename = 'DATA_PRODUCT_'+date.getFullYear()+('0' + (date.getMonth() + 1)).slice(-2)+('0' + date.getDate()).slice(-2);
+			var contentDispositionHeader = headers('Content-Disposition');
+      var result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
+      var filename = result.replace(/"/g, '');
+			saveAs(blob, filename + '.xlsx');
 		});
 	}
 	// End excel function

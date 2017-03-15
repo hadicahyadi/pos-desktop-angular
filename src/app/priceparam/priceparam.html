@@ -1,0 +1,28 @@
+
+<!-- Accent-colored raised button with ripple -->
+<button  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ui-sref="main.priceparam.priceparam-dialog" id="createBtn">
+  Create
+</button>
+<br/>
+<br/>
+<table class="mdl-data-table mdl-js-data-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Param Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="ng-animation-disabled" dir-paginate="priceparam in vm.priceparams | itemsPerPage: vm.pageSize" current-page="vm.currentPage" total-items="vm.dataCount">
+      <td>{{priceparam.id}}</td>
+      <td>{{priceparam.paramName}}</td>
+    </tr>
+  </tbody>
+</table>
+<dir-pagination-controls
+        boundary-links="true"
+        on-page-change="vm.pageChangeHandler(newPageNumber)">
+</dir-pagination-controls>
+
+
+<div ui-view autoscroll="false"></div>

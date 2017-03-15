@@ -18,6 +18,8 @@
     vm.netSales = 0;
     vm.discount = 0;
     vm.totalSales = 0;
+    vm.baseTotal = 0;
+    vm.profit = 0;
     // vm.period = 'MONTHLY';
     vm.date = 'Period';
 
@@ -29,6 +31,8 @@
         vm.netSales = response.data.netSales;
         vm.discount = response.data.discount;
         vm.totalSales = response.data.totalSales;
+        vm.baseTotal = response.data.baseTotal;
+        vm.profit = response.data.profit;
       },
       function errorCallback(response){
         $log.info(response);

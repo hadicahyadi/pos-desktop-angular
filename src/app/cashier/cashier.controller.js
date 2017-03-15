@@ -4,11 +4,11 @@
   angular
     .module('posapp')
     .controller('CashierController',  ['$state','$http','$log','BASE_URL','$scope','$cookies','productService','salesOrderService'
-      ,'transactionMethodService','customerService','toastr','$filter', CashierController]);
+      ,'transactionMethodService','customerService','priceparamService','toastr','$filter', CashierController]);
 
   
   /** @ngInject */
-  function CashierController($state,$http,$log,BASE_URL,$scope,$cookies,productService,salesOrderService,transactionMethodService,customerService,toastr,$filter) {
+  function CashierController($state,$http,$log,BASE_URL,$scope,$cookies,productService,salesOrderService,transactionMethodService,customerService,priceparamService,toastr,$filter) {
 
   	var vm = this;
   	$scope.$parent.pageTitle = "Cashier";
@@ -17,7 +17,6 @@
     vm.total = 0;
     vm.subtotal = 0;
     vm.transactionMethod = {id:null,methodName:null};
-    // vm.minLot = angular.fromJson($cookies.get('sessionAttribute')).MIN_LOT;
     
   	vm.product = {
       id: null,
@@ -25,12 +24,10 @@
       categoryId: null,
       productCode: null,
       productName: null,
-      pcsPrice: null,
-      lotPrice: null,
-      minLot: null,
+      basePrice: null,
       minStock: null,
       stock: null,
-      description: null
+      productPriceList: []
     };
 
     vm.customer = {
@@ -41,16 +38,13 @@
     };
 
     vm.productName = "";
-
-
     vm.products = [];
 
     vm.cartItem = {
       product: null,
       qty: null,
       subtotal: null,
-      price: null,
-      sellPrice: null
+      price: null
     }
 
   	vm.cart = [];
@@ -64,6 +58,10 @@
     vm.grandTotal = 0;
     vm.paymentLabel = "Payment";
     vm.productsTmp = [];
+    vm.priceParams = [];
+    vm.priceParam = null;
+
+    loadPriceParam();
    
     vm.updateProduct = function(value){
       productService.getByProductCode(value).then(function successCallback(response){
@@ -83,6 +81,13 @@
       });
 
       return arrTmp;
+    }
+
+    function loadPriceParam(){
+      priceparamService.getAll(99,1).success(function(response){
+        vm.priceParams = [].concat(response.datas);
+        vm.priceParam = vm.priceParams[0].id;
+      });
     }
 
     vm.selectProduct = function(value){
@@ -106,12 +111,8 @@
     }
 
     vm.changeQty = function(item,index){
-      if(item.qty >= item.product.minLot){
-        $log.info(item.product.minLot);
-        item.sellPrice = item.product.lotPrice;
-      }else if(item.qty < item.product.minLot){
-        item.sellPrice = item.product.pcsPrice;
-      }
+      var pricing =  $filter('productPriceLookup')(vm.priceParam,item.qty,item.product.productPriceList);
+      item.price = pricing.priceValue;
     }
 
     vm.changeMethod = function(method){
@@ -140,11 +141,11 @@
       $log.info("collection result = "+pp.productCode);
       var flag = true;
   		productService.getByProductCode(pp.productCode).then(function successCallback(response){
-        $log.info(response);
         if(response.data == null){
           alert("Product not found");
         }else{
-          vm.cartItem = {product:response.data[0],qty:1,subtotal:0,price:response.data[0].price,sellPrice:response.data[0].pcsPrice};
+          var pricing =  $filter('productPriceLookup')(vm.priceParam,1,response.data[0].productPriceList);
+          vm.cartItem = {product:response.data[0],qty:1,subtotal:0,price:pricing.priceValue};
 
           if(vm.cart.length > 0){
             angular.forEach(vm.cart,function(item){
@@ -176,7 +177,6 @@
         
       },
       function errorCallback(response){
-        $log.info(response);
         toastr.error(response.data.message,'Failed');
       });
 
@@ -196,14 +196,14 @@
       var total = 0;
       angular.forEach(vm.cart, function(item) {
 
-        total += item.qty * item.sellPrice;
+        total += item.qty * item.price;
       })
       vm.total = total;
       return total;
     };
 
     vm.save = function(){
-
+      var priceType = $filter('collectionLookup')('id',vm.priceParam,vm.priceParams);
       if(vm.customerId == 'none'){
         vm.customerId = null;
       }
@@ -224,7 +224,8 @@
         payment: vm.payment,
         customerId: vm.customerId,
         status: null,
-        downPayment: 0
+        downPayment: 0,
+        priceType: priceType.paramName
       };
 
       if(vm.transactionMethod.methodName == 'DEBT' && vm.payment == 0){

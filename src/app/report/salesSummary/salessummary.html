@@ -43,6 +43,14 @@
 					<td><strong>Net Sales</strong></td>
 					<td><strong>{{vm.netSales | currency: ''}}</strong></td>
 				</tr>
+				<tr>
+					<td><strong>Base Total</strong></td>
+					<td><strong>{{vm.baseTotal | currency: ''}}</strong></td>
+				</tr>
+				<tr>
+					<td><strong>Profit (net sales - base total)</strong></td>
+					<td class="mdl-color-text--accent"><strong>{{vm.profit | currency: ''}}</strong></td>
+				</tr>
 			</table>
 		</div>
 	</div>

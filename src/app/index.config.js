@@ -21,12 +21,16 @@
     toastrConfig.target = 'body';
 
     $httpProvider.interceptors.push(function($q) {
+        var isBreak = true;
         return {
           responseError: function(rejection) {
                 if(rejection.status <= 0) {
-                    // toastr.error('Connection Refused, Make Sure Server is Live','Failed');
-                    alert('Connection Refused, Make Sure Server is Live');
-                    return rejection;
+                    if(isBreak){
+                        alert('Connection Refused, Make Sure Server is Live');
+                        isBreak = false;
+                        return rejection;
+                    }
+                    
                 }
                 return $q.reject(rejection);
             }

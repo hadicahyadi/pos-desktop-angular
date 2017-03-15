@@ -1,4 +1,3 @@
-
 <div id="search-container" class="mdl-textfield mdl-js-textfield">
   <input class="mdl-textfield__input" ng-model="vm.searchValue"  type="text" id="searchValue">
   <label class="mdl-textfield__label" for="searchValue">Product code or product name</label>
@@ -8,10 +7,10 @@
 </div>
 <br>
 <!-- Accent-colored raised button with ripple -->
-<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ui-sref="main.product.product-dialog" id="createBtn">
+<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ui-sref="main.product-form({product: null})" id="createBtn">
   Create
 </button>&nbsp;&nbsp;&nbsp;
-<button type="button" ng-click="vm.export()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="exportBtn">
+<button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="exportBtn">
   Export
 </button>&nbsp;&nbsp;&nbsp;
 <button type="button" ng-click="vm.refresh()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
@@ -30,13 +29,9 @@
       <th>Product Name</th>
       <th>Brand</th>
       <th>Category</th>
-      <th>Price</th>
-      <th>Pcs Price</th>
-      <th>Lot Price</th>
-      <th>Min Lot</th>
+      <th>Base Price</th>
       <th>Min Stock</th>
       <th>Stock</th>
-      <th>Description</th>
       <th>Action</th>
     </tr>
   </thead>
@@ -46,15 +41,15 @@
       <td>{{product.productName}}</td>
       <td>{{product.brand.brandName}}</td>
       <td>{{product.category.categoryName}}</td>
-      <td>{{product.price | currency:''}}</td>
-      <td>{{product.pcsPrice | currency:''}}</td>
-      <td>{{product.lotPrice | currency:''}}</td>
-      <td>{{product.minLot}}</td>
+      <td>{{product.basePrice | currency:''}}</td>
       <td>{{product.minStock}}</td>
       <td>{{product.stock}}</td>
-      <td>{{product.description}}</td>
       <td style="padding-top:8px;padding-right:12px">
-       <button id="editBtn" ui-sref="main.product.product-dialog" ng-click="vm.edit(product)" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px" >edit</i></button>
+       <button id="editBtn" ui-sref="main.product-form({product: product})" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px" >edit</i></button>
+       <button id="viewBtn{{product.id}}" ng-click="vm.product = product;vm.loadProductPrices()" ui-sref="main.product.product-price" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px">visibility</i></button>
+        <div class="mdl-tooltip" for="viewBtn{{product.id}}">
+          View Pricing
+        </div>
       </td>
     </tr>
   </tbody>
@@ -64,6 +59,36 @@
         on-page-change="vm.pageChangeHandler(newPageNumber)">
 </dir-pagination-controls>
 
+<dialog class="mdl-dialog" ng-init="vm.loadPriceParam()">
+  <h4 class="mdl-dialog__title">Choose Price Identifier</h4>
+  <div class="mdl-dialog__content">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-focused">
+      <select id="pricingName" class="mdl-textfield__input" ng-model="vm.priceParam" ng-options="priceParam.id as priceParam.paramName for priceParam in vm.priceParams">
+      </select>
+      <label class="mdl-textfield__label" for="pricingName">Price Identifier</label>
+    </div><br>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button ok" ng-click="vm.export()">Ok</button>
+    <button type="button" class="mdl-button close">Cancel</button>
+  </div>
+</dialog>
+<script>
+var dialog = document.querySelector('dialog');
+var showDialogButton = document.querySelector('#exportBtn');
+if (! dialog.showModal) {
+  dialogPolyfill.registerDialog(dialog);
+}
+showDialogButton.addEventListener('click', function() {
+  dialog.showModal();
+});
+dialog.querySelector('.close').addEventListener('click', function() {
+  dialog.close();
+});
+dialog.querySelector('.ok').addEventListener('click', function() {
+  dialog.close();
+});
+</script>
 
 <div ui-view autoscroll="false"></div>
 

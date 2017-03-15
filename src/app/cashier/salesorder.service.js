@@ -25,6 +25,10 @@
             return $http.post(BASE_URL+"/salesorder/print?id="+id);
         }
 
+        this.getByPriceType = function(priceType,itemsPerPage,pageNumber){
+            return $http.get(BASE_URL+"/salesorder/search?priceType="+priceType+"&itemsPerPage="+itemsPerPage+"&pageNumber="+pageNumber);
+        }
+
     }]);
 
 })();

@@ -17,9 +17,9 @@
   </header>
 
   <div class="mdl-layout__drawer mdl-color--indigo-50">
-    <header class="demo-drawer-header mdl-color--indigo-500" style="color:white">
+    <header class="demo-drawer-header mdl-color--indigo-500" style="color:white;background:url('./assets/images/bg3.png')">
       <img src="./assets/images/logoSmall.png" style="margin-top:5px"/><br/>
-      <p>posapp v1.0</p>
+      <p>Sentosa Grocery Store</p>
     </header>
     <nav class="mdl-navigation ">
       <a class="mdl-navigation__link" ui-sref="main.dashboard"><i class="material-icons">dashboard</i>Dashboard</a>
@@ -51,19 +51,19 @@
     <li class="mdl-menu__item" ui-sref="main.salesorder">Sales</li>
   </ul>
 
-  <a class="mdl-navigation__link" href=""><i class="material-icons">assignment</i>Report
+  <a class="mdl-navigation__link" href="" ng-show="user.username === 'REPORT'"><i class="material-icons">assignment</i>Report
     <button id="reportBtn" class="mdl-button mdl-js-button mdl-button--icon">
      <i class="material-icons">arrow_drop_down</i>
    </button>
  </a>
  <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="reportBtn">
   <li class="mdl-menu__item" ui-sref="main.salessummary">End of Day</li>
-  <li class="mdl-menu__item" ui-sref="main.transactionsummary" ng-show="user.roleId == 1">Transaction Summary</li>
+  <!-- <li class="mdl-menu__item" ui-sref="main.transactionsummary" ng-show="user.roleId == 1">Transaction Summary</li> -->
 </ul>
 
 <a class="mdl-navigation__link" ui-sref="main.user" ng-show="user.roleId == 1"><i class="material-icons">group</i>User</a>
 
-<!-- <a class="mdl-navigation__link" ui-sref="main.setting"><i class="material-icons">settings</i>Setting</a> -->
+<a class="mdl-navigation__link" ui-sref="main.priceparam" ng-show="user.roleId == 1"><i class="material-icons">settings</i>Settings</a>
 </nav>
 </div>
 

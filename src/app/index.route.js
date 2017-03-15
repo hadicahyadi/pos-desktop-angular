@@ -122,8 +122,20 @@
        authenticate: true
      })
 
-      .state("main.product.product-dialog", {
-        templateUrl: "app/product/product-dialog.html",
+      .state("main.product-form", {
+       url: "/product/form",
+       templateUrl: "app/product/product-form.html",
+       controller: "ProductFormController",
+       controllerAs: "vm",
+       parent: "main"  ,
+       authenticate: true,
+       params:{
+        product: null
+       }
+      })
+
+      .state("main.product.product-price", {
+        templateUrl: "app/product/product-price.html",
         onEnter: ["$state", function($state) {
           $(document).on("click", ".close", function() {
             $state.go("main.product");
@@ -267,21 +279,41 @@
        authenticate: true
      })
 
-     //--- TRANSACTION SUMMARY STATE ---
-     .state("main.setting", {
-       url: "/setting",
-       templateUrl: "app/setting/setting.html",
-       controller: "SettingController",
+     //--- SETTING STATE ---
+     // .state("main.setting", {
+     //   url: "/setting",
+     //   templateUrl: "app/setting/setting.html",
+     //   controller: "SettingController",
+     //   controllerAs: "vm",
+     //   parent: "main",
+     //   authenticate: true
+     // })
+
+     // .state("main.setting.setting-dialog", {
+     //    templateUrl: "app/setting/setting-dialog.html",
+     //    onEnter: ["$state", function($state) {
+     //      $(document).on("click", ".close", function() {
+     //        $state.go("main.setting");
+     //      });
+     //    }],
+
+     //  })
+
+     //--- PRICE PARAM STATE ---
+     .state("main.priceparam", {
+       url: "/priceparam",
+       templateUrl: "app/priceparam/priceparam.html",
+       controller: "PriceParamController",
        controllerAs: "vm",
        parent: "main",
        authenticate: true
      })
 
-     .state("main.setting.setting-dialog", {
-        templateUrl: "app/setting/setting-dialog.html",
+     .state("main.priceparam.priceparam-dialog", {
+        templateUrl: "app/priceparam/priceparam-dialog.html",
         onEnter: ["$state", function($state) {
           $(document).on("click", ".close", function() {
-            $state.go("main.setting");
+            $state.go("main.priceparam");
           });
         }],
 

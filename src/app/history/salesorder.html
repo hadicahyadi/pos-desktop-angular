@@ -1,11 +1,17 @@
-
-<!-- Accent-colored raised button with ripple -->
-<!-- <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ui-sref="main.category.category-dialog" id="createBtn">
-  Create
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+  <select ng-init="vm.loadPriceParam()" ng-model = "vm.priceParam" class="mdl-textfield__input">
+    <option ng-repeat="priceParam in vm.priceParams" ng-value="priceParam.paramName" ng-selected="$first">{{priceParam.paramName}}</option>
+  </select>
+  <label class="mdl-textfield__label" for="customer">Search by Price Type</label>
+</div>&nbsp;&nbsp;&nbsp;
+<button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--accent" title="search" ng-click="vm.search()">
+  <i class="material-icons">search</i>
+</button>&nbsp;&nbsp;&nbsp;
+<button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--accent" title="refresh" ng-click="vm.load()">
+  <i class="material-icons">refresh</i>
 </button>
-<br/>
-<br/> -->
-<table class="mdl-data-table mdl-js-data-table">
+<br>
+<table class="mdl-data-table mdl-js-data-table" ng-init="vm.load()">
   <thead>
     <tr>
       <th>No</th>
@@ -18,12 +24,13 @@
       <th>Customer</th>
       <th>Status</th>
       <th>Down Payment</th>
+      <th>Price Type</th>
       <th>Action</th>
     </tr>
   </thead>
   <tbody>
     <tr class="ng-animation-disabled" dir-paginate="salesorder in vm.salesorders | itemsPerPage: vm.pageSize" current-page="vm.currentPage"  total-items="vm.dataCount">
-      <td>{{$index+1}}</td>
+      <td>{{salesorder.count}}</td>
       <td>{{salesorder.transactionDate | date : 'dd/MM/yyyy HH:MM'}}</td>
       <td>{{salesorder.user.name}}</td>
       <td>{{salesorder.transactionMethod.methodName}}</td>
@@ -33,6 +40,7 @@
       <td>{{salesorder.customer.id != 0 ? salesorder.customer.customerName : '-'}}</td>
       <td>{{salesorder.status}}</td>
       <td>{{salesorder.downPayment | currency: ''}}</td>
+      <td>{{salesorder.priceType}}</td>
       <td style="padding-top:8px">
         <button id="viewBtn{{salesorder.id}}" ng-click="vm.salesorder = salesorder" ui-sref="main.salesorder.detail" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px">visibility</i></button>
         <div class="mdl-tooltip" for="viewBtn{{salesorder.id}}">

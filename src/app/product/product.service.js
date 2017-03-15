@@ -18,9 +18,9 @@
             return $http.get(BASE_URL+"/product/getByProductCode?productCode="+productCode);
         }
 
-        this.export = function(){
+        this.export = function(priceParamId){
             return $http({
-              url: BASE_URL+"/product/export",
+              url: BASE_URL+"/product/export?priceParamId="+priceParamId,
               method: "POST",
               headers: {
                'Content-type': 'application/json'
@@ -31,6 +31,10 @@
 
         this.findProduct = function(value){
             return $http.get(BASE_URL+"/product/search?searchValue="+value);
+        }
+
+        this.getProductPrices = function(productId){
+          return $http.get(BASE_URL+"/product/getProductPrices?productId="+productId);
         }
 
     }]);

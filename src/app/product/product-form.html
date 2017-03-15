@@ -1,0 +1,137 @@
+
+<form name="form" id="form">
+	<div class="mdl-grid" style="padding:0px">
+		<div class="mdl-cell mdl-cell--4-col">
+			<div ng-class="vm.isEdit()">
+				<select id="brand" class="mdl-textfield__input" required ng-model="vm.product.brandId" ng-options="brand.id as brand.brandName for brand in vm.brands">
+				</select>
+				<label class="mdl-textfield__label" for="brand">Brand</label>
+			</div>
+		</div>
+
+		<div class="mdl-cell mdl-cell--4-col">
+			<div ng-class="vm.isEdit()"  >
+				<select id="category" class="mdl-textfield__input" required ng-model="vm.product.categoryId" ng-options="category.id as category.categoryName for category in vm.categories">
+				</select>
+				<label class="mdl-textfield__label" for="category">Category</label>
+			</div>
+		</div>
+	</div>
+
+	<div class="mdl-grid" style="padding:0px">
+		<div class="mdl-cell mdl-cell--4-col">
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" required ng-model="vm.product.productCode" type="text" id="productCode">
+				<label class="mdl-textfield__label" for="productCode">Product Code</label>
+			</div>
+		</div>
+
+		<div class="mdl-cell mdl-cell--4-col">
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" required ng-model="vm.product.productName" type="text" id="productName">
+				<label class="mdl-textfield__label" for="productName">Product Name</label>
+			</div>
+		</div>
+	</div>
+
+	<div class="mdl-grid" style="padding:0px">
+		<div class="mdl-cell mdl-cell--4-col">
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" required ng-model="vm.product.basePrice" type="text" id="lotPrice">
+				<label class="mdl-textfield__label" for="lotPrice">Base Price</label>
+			</div>
+		</div>
+
+		<div class="mdl-cell mdl-cell--4-col">
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" required ng-model="vm.product.minStock" type="number" id="minStock">
+				<label class="mdl-textfield__label" for="minStock">Minimun Stock</label>
+			</div>
+		</div>
+	</div>
+
+	<div class="mdl-grid" style="padding:0px">
+		<div class="mdl-cell mdl-cell--4-col" >
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" ng-disabled="vm.isDisabled" ng-model="vm.product.stock" type="number" id="stock">
+				<label class="mdl-textfield__label" for="stock">Stock</label>
+			</div>
+		</div>
+	</div>
+	<!-- Pricing Section -->
+	<h5>Pricing Setup</h5>
+	<hr style="border-style:dashed"/>
+	<div class="mdl-grid" style="padding:0px">
+		<div class="mdl-cell mdl-cell--4-col" >
+			<div ng-class="vm.isEdit()">
+				<select id="pricingName" class="mdl-textfield__input" ng-model="vm.productPrice.priceParam" ng-options="priceParam as priceParam.paramName for priceParam in vm.priceParams">
+				</select>
+				<label class="mdl-textfield__label" for="pricingName">Price Identifier</label>
+			</div>
+		</div>
+		<div class="mdl-cell mdl-cell--2-col">
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" ng-model="vm.productPrice.min" type="number" id="min" min="1">
+				<label class="mdl-textfield__label" for="min">Min</label>
+			</div>
+		</div>
+		<div class="mdl-cell mdl-cell--2-col">
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" ng-model="vm.productPrice.max" type="number" id="max" min="1">
+				<label class="mdl-textfield__label" for="max">Max</label>
+			</div>
+		</div>
+		<div class="mdl-cell mdl-cell--4-col">
+			<div ng-class="vm.isEdit()">
+				<input class="mdl-textfield__input" ng-model="vm.productPrice.priceValue" type="text" id="price">
+				<label class="mdl-textfield__label" for="price">Price</label>
+			</div>
+		</div>
+	</div>
+	
+	<div class="mdl-cell mdl-cell--8-col">
+		<button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ng-click="vm.addPrice()">Add</button>
+		<br><br>
+		<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width:100%">
+			<thead>
+				<tr>
+					<th style="text-align:left">Price Identifier</th>
+					<th style="text-align:left">Min</th>
+					<th style="text-align:left">Max</th>
+					<th style="text-align:left">Price</th>
+					<th style="text-align:left" ng-hide="vm.product.id != null">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="productPrice in vm.productPrices">
+					<td style="text-align:left">{{productPrice.priceParam.paramName}}</td>
+					<!-- <td style="text-align:left">{{productPrice.min}}</td> -->
+					<td style="text-align:left">
+						<!-- Numeric Textfield -->
+						<input  class="mdl-textfield__input" type="number" id="sample2" ng-model="productPrice.min">
+					</td>
+					<!-- <td style="text-align:left">{{productPrice.max}}</td> -->
+					<td style="text-align:left">
+						<!-- Numeric Textfield -->
+						<input  class="mdl-textfield__input" type="number"id="sample3" ng-model="productPrice.max">
+					</td>
+					<!-- <td style="text-align:left">{{productPrice.priceValue | currency:''}}</td> -->
+					<td style="text-align:left">
+						<!-- Numeric Textfield -->
+						<input  class="mdl-textfield__input" type="text"id="sample4" ng-model="productPrice.priceValue">
+					</td>
+					<td ng-hide="vm.product.id != null" style="text-align:left;padding-top:8px"><button id="deleteBtn" type="button" ng-click="vm.remove($index)" class="mdl-button mdl-js-button mdl-button--icon mdl-color-text--accent"><i class="material-icons" style="font-size:18px">clear</i></button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- End pricing section -->
+
+	<div class="mdl-grid" style="padding:0px">
+		<div class="mdl-cell mdl-cell--4-col" style="padding-top:0px">
+			<button type="submit" ng-click="form.$valid && vm.save()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save</button>&nbsp;
+			<button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ui-sref="main.product">Cancel</button>
+		</div>
+	</div>
+</form>
+
