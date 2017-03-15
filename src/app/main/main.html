@@ -41,7 +41,7 @@
 
     <a class="mdl-navigation__link" ui-sref="main.cashier"><i class="material-icons">shopping_cart</i>Cashier</a>
 
-    <a class="mdl-navigation__link" href="" ng-show="user.roleId == 1"><i class="material-icons" ng-show="user.roleId == 1">history</i>History
+    <a class="mdl-navigation__link" href="" ng-show="user.username === 'report'"><i class="material-icons">history</i>History
       <button id="historyBtn" class="mdl-button mdl-js-button mdl-button--icon">
        <i class="material-icons">arrow_drop_down</i>
      </button>
@@ -51,7 +51,7 @@
     <li class="mdl-menu__item" ui-sref="main.salesorder">Sales</li>
   </ul>
 
-  <a class="mdl-navigation__link" href="" ng-show="user.username === 'REPORT'"><i class="material-icons">assignment</i>Report
+  <a class="mdl-navigation__link" href="" ng-show="user.username === 'report'"><i class="material-icons">assignment</i>Report
     <button id="reportBtn" class="mdl-button mdl-js-button mdl-button--icon">
      <i class="material-icons">arrow_drop_down</i>
    </button>
