@@ -40,7 +40,8 @@
 		vm.isDisabled = true;
 		vm.searchValue = "";
 		vm.priceParams = [];
-    vm.priceParam = null;
+   		vm.priceParam = null;
+   		vm.isDownload = false;
 
 		load();
 		loadBrand();
@@ -129,6 +130,7 @@
 
 	// Download excel function
 	vm.export = function(){
+		vm.isDownload = true;
 		productService.export(vm.priceParam).success(function (data, status, headers, config) {
 			$log.info(headers());
 			var blob = new Blob([data], {
@@ -137,9 +139,10 @@
 			// var date = new Date();
 			// vm.filename = 'DATA_PRODUCT_'+date.getFullYear()+('0' + (date.getMonth() + 1)).slice(-2)+('0' + date.getDate()).slice(-2);
 			var contentDispositionHeader = headers('Content-Disposition');
-      var result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
-      var filename = result.replace(/"/g, '');
+    	var result = contentDispositionHeader.split(';')[1].trim().split('=')[1];
+    	var filename = result.replace(/"/g, '');
 			saveAs(blob, filename + '.xlsx');
+			vm.isDownload = false;
 		});
 	}
 	// End excel function
@@ -180,7 +183,7 @@
 		load();
 	}
 
-	//--- ALL EXPORT to PDF FUNCTION GOES BELOW (UNUSED)---
+	//--- ALL EXPORT to PDF FUNCTION GOES BELOW (UNUSED) ---
 
 	function buildColumns(columns){
 		var arrColumn = [];
