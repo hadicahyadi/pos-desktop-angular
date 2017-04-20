@@ -13,8 +13,6 @@
 
 		$scope.user = angular.fromJson($cookies.get('user'));
 
-		$scope.chartData = JSON.stringify(dataSales.data);
-
 		//--- DAILY STATS ---
 		$scope.labels = [];
 		$scope.series = ['Daily'];
@@ -34,17 +32,21 @@
 		loadSalesOrderCredit();
 
 		function loadChart(){
-			angular.forEach(dataSales.data.daily,function(item){
-				$scope.labels.push(item.transactionDate);
-				$scope.dataTrx.push(item.transactionSum);
-			});
-			$scope.dataDaily.push($scope.dataTrx);
-
-			angular.forEach(dataSales.data.monthly,function(item){
-				$scope.labelsMonthly.push(item.transactionDate);
-				$scope.dataTrxMonthly.push(item.transactionSum);
-			});
-			$scope.dataMonthly.push($scope.dataTrxMonthly);
+			if(dataSales.data.daily.length){
+				angular.forEach(dataSales.data.daily,function(item){
+					$scope.labels.push(item.transactionDate);
+					$scope.dataTrx.push(item.transactionSum);
+				});
+				$scope.dataDaily.push($scope.dataTrx);
+			}
+			if(dataSales.data.monthly.length){
+				angular.forEach(dataSales.data.monthly,function(item){
+					$scope.labelsMonthly.push(item.transactionDate);
+					$scope.dataTrxMonthly.push(item.transactionSum);
+				});
+				$scope.dataMonthly.push($scope.dataTrxMonthly);
+			}
+			
 		}
 		
 		function loadPurchaseDebt(){
@@ -84,9 +86,6 @@
 		$scope.onClick = function (points, evt) {
 			console.log(points, evt);
 		};
-
-		$scope.labelsPie = ["Download Sales", "In-Store Sales", "Mail-Order Sales", "Tele Sales", "Corporate Sales"];
-		$scope.dataPie = [300, 500, 100, 40, 120];
 
 	 
 	}

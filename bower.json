@@ -22,7 +22,7 @@
     "pdfmake": "^0.1.20",
     "angularjs-datepicker": "^2.1.6",
     "angular-validation": "^1.4.2",
-    "allmighty-autocomplete": "~1.0.140706"
+    "allmighty-autocomplete": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.5.3"

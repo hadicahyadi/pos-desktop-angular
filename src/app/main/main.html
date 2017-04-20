@@ -21,10 +21,10 @@
       <img src="./assets/images/logoSmall.png" style="margin-top:5px"/><br/>
       <p>Sentosa Grocery Store</p>
     </header>
-    <nav class="mdl-navigation ">
+    <nav class="mdl-navigation">
       <a class="mdl-navigation__link" ui-sref="main.dashboard"><i class="material-icons">dashboard</i>Dashboard</a>
 
-      <a class="mdl-navigation__link" href="" ng-show="user.roleId == 1"><i class="material-icons">description</i>Master
+      <a class="mdl-navigation__link" href="" ng-show="user.roleId == 1 || user.roleId == 3"><i class="material-icons">description</i>Master
         <button id="masterBtn" class="mdl-button mdl-js-button mdl-button--icon">
          <i class="material-icons">arrow_drop_down</i>
        </button>
